@@ -1,0 +1,54 @@
+{
+  "fuso": "America/Bahia",
+  "agenda": {"segunda": "19:00", "quarta": "12:00", "sexta": "12:00"},
+  "status_possiveis": ["pendente", "rascunho", "aprovado", "publicado", "pulado"],
+  "posts": [
+    {"id": "postura", "data": "2026-11-11", "hora": "15:13", "pasta": "carrosseis/2026-11-postura",
+     "tema": "A sua postura não é culpada pela sua dor nas costas", "status": "publicado", "media_id": "18120786467281517"},
+
+    {"id": "corrida-joelho", "data": "2026-11-16", "hora": "19:00", "pasta": "carrosseis/2026-11-16-corrida-joelho", "status": "pendente",
+     "tema": "Correr não destrói o joelho",
+     "angulo": "Corredores recreativos têm menos artrose de joelho e quadril que sedentários; o que lesiona é aumento brusco de volume (gestão de carga). Conferir: Alentorn-Geli et al., JOSPT 2017 (meta-análise), e evidência sobre progressão de carga.",
+     "ilustracao_sugerida": "joelho em vista lateral (fêmur, tíbia, patela, menisco/cartilagem em verde-água)"},
+
+    {"id": "alongamento", "data": "2026-11-18", "hora": "12:00", "pasta": "carrosseis/2026-11-18-alongamento", "status": "pendente",
+     "tema": "Alongar antes do treino não previne lesão",
+     "angulo": "Alongamento estático pré-treino não reduz lesões; aquecimento ativo/neuromuscular (ex.: FIFA 11+) reduz. Conferir: Lauersen et al., BJSM 2014; meta-análises do FIFA 11+ (ex.: Thorborg et al., BJSM 2017).",
+     "ilustracao_sugerida": "músculos da coxa (isquiotibiais/quadríceps) com fibras em volume"},
+
+    {"id": "ombro-volei", "data": "2026-11-20", "hora": "12:00", "pasta": "carrosseis/2026-11-20-ombro-volei", "status": "pendente",
+     "tema": "Ombro do jogador de vôlei: exercícios que previnem lesão",
+     "angulo": "Programas preventivos de manguito rotador e escápula reduzem problemas de ombro em atletas overhead. Conferir: Andersson et al., BJSM 2017 (OSTRC Shoulder Injury Prevention Programme). Tema ligado às revisões do próprio Lucas.",
+     "ilustracao_sugerida": "articulação do ombro (úmero, escápula, clavícula, manguito em verde-água)"},
+
+    {"id": "hernia-exame", "data": "2026-11-23", "hora": "19:00", "pasta": "carrosseis/2026-11-23-hernia-exame", "status": "pendente",
+     "tema": "Seu exame mostra hérnia, mas isso não quer dizer que ela causa a sua dor",
+     "angulo": "Achados degenerativos (desidratação discal, protrusão) são muito comuns em pessoas sem dor e aumentam com a idade. Conferir: Brinjikji et al., AJNR 2015.",
+     "ilustracao_sugerida": "disco intervertebral em corte com núcleo pulposo, reutilizar o estilo da coluna"},
+
+    {"id": "musculacao-60", "data": "2026-11-25", "hora": "12:00", "pasta": "carrosseis/2026-11-25-musculacao-60", "status": "pendente",
+     "tema": "Musculação depois dos 60 é remédio",
+     "angulo": "Treino de força combate sarcopenia e melhora função; programas de exercício (ex.: Otago) reduzem quedas. Conferir: Sherrington et al., Cochrane 2019; diretrizes de sarcopenia.",
+     "ilustracao_sugerida": "fibras musculares/bíceps em volume ou idoso estilizado com halter, em traço anatômico"},
+
+    {"id": "tendinite", "data": "2026-11-27", "hora": "12:00", "pasta": "carrosseis/2026-11-27-tendinite", "status": "pendente",
+     "tema": "Tendinite não melhora só com repouso",
+     "angulo": "Tendinopatia responde a carga progressiva (isometria, exercício pesado e lento); repouso total tende a reduzir a capacidade do tendão. Conferir: revisões sobre exercício em tendinopatia patelar/Aquiles (ex.: Malliaras et al.).",
+     "ilustracao_sugerida": "tendão de Aquiles/calcâneo ou tendão patelar com fibras"},
+
+    {"id": "forca-corredor", "data": "2026-11-30", "hora": "19:00", "pasta": "carrosseis/2026-11-30-forca-corredor", "status": "pendente",
+     "tema": "Treino de força é o seguro do corredor",
+     "angulo": "Treino de força reduz lesões esportivas; alongamento não. Conferir: Lauersen et al., BJSM 2014. Conectar com calistenia.",
+     "ilustracao_sugerida": "perna de corredor em vista lateral com músculos em volume"},
+
+    {"id": "agulhamento", "data": "2026-12-02", "hora": "12:00", "pasta": "carrosseis/2026-12-02-agulhamento", "status": "pendente",
+     "tema": "Agulhamento a seco: o que a ciência realmente mostra",
+     "angulo": "Efeito de curto prazo na dor; melhor combinado com exercício; evidência heterogênea. Conferir revisões sistemáticas recentes. Tema de trabalho apresentado pelo próprio Lucas (ombro de atletas overhead).",
+     "ilustracao_sugerida": "agulha fina entrando em fibra muscular (trapézio/ombro), traço anatômico"},
+
+    {"id": "entorse-tornozelo", "data": "2026-12-04", "hora": "12:00", "pasta": "carrosseis/2026-12-04-entorse-tornozelo", "status": "pendente",
+     "tema": "Entorse de tornozelo não é 'só uma torcida'",
+     "angulo": "Recidiva e instabilidade crônica são comuns; treino de equilíbrio/propriocepção reduz recidivas. Conferir: Doherty et al., BJSM 2017 (consenso/meta-análise); diretrizes de entorse lateral.",
+     "ilustracao_sugerida": "tornozelo/pé em vista lateral com ligamento talofibular anterior em verde-água"}
+  ]
+}

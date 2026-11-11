@@ -1,0 +1,40 @@
+{
+  "titulo": "A sua postura não é culpada pela sua dor nas costas",
+  "slides": [
+    {"tipo": "capa", "ilustracao": "coluna", "tag": "MITO OU VERDADE",
+     "titulo": "A sua postura ==não é culpada== pela sua dor nas costas",
+     "subtitulo": "O que **41 revisões sistemáticas** mostram sobre isso."},
+    {"tipo": "mito", "tag": "O MITO", "rotulo": "O QUE A GENTE OUVE",
+     "titulo": "Desde cedo, a culpa da dor vai sempre para a postura.",
+     "riscados": ["Senta direito", "Ombro pra trás", "Não curva a coluna", "Postura perfeita", "Dobra o joelho sempre"],
+     "caixa": "A ideia parece lógica. **Mas a ciência não confirma.**", "icone": "lampada"},
+    {"tipo": "evidencia", "tag": "A EVIDÊNCIA", "rotulo": "O QUE A CIÊNCIA DIZ",
+     "numero": "41", "legenda_numero": "revisões sistemáticas<br>analisadas em conjunto",
+     "titulo": "Não há consenso de que a postura **cause** dor lombar.",
+     "texto": "Sentar, ficar em pé, curvar e girar o tronco foram avaliados. Alguns estudos mostram **associação**, mas associação não é o mesmo que **causa**.",
+     "fonte": "Swain et al., <i>Journal of Biomechanics</i>, 2019"},
+    {"tipo": "destaque", "tag": "E O PESO?", "rotulo": "LEVANTAR COM A COLUNA CURVADA",
+     "titulo": "Curvar a coluna para pegar peso **não é o vilão.**",
+     "texto": "Uma meta-análise não encontrou a flexão da lombar ao levantar como **fator de risco** para dor lombar.",
+     "caixa_rotulo": "CURIOSIDADE", "caixa": "Quem tem dor tende a levantar com **menos** flexão: mais rígido e protegido.",
+     "fonte": "Saraceni et al., <i>JOSPT</i>, 2020. Evidência de baixa qualidade."},
+    {"tipo": "lista", "tag": "O QUE IMPORTA", "rotulo": "ENTÃO DE ONDE VEM A DOR?",
+     "titulo": "Dor nas costas raramente tem **uma causa só.**",
+     "itens": [
+       {"icone": "carga", "titulo": "Carga acima da capacidade", "texto": "Fazer de repente mais do que o corpo está preparado."},
+       {"icone": "cadeira", "titulo": "Pouca variação de movimento", "texto": "Horas na mesma posição, qualquer que seja ela."},
+       {"icone": "lua", "titulo": "Sono ruim e estresse", "texto": "Deixam o sistema nervoso mais sensível à dor."},
+       {"icone": "escudo", "titulo": "Medo de se mexer", "texto": "Proteger demais a coluna pode manter a dor."}]},
+    {"tipo": "passos", "tag": "NA PRÁTICA", "rotulo": "O QUE FAZER",
+     "titulo": "A melhor postura é **a próxima.**",
+     "itens": [
+       {"titulo": "Varie de posição", "texto": "Levante e mude de postura ao longo do dia."},
+       {"titulo": "Fortaleça o corpo", "texto": "Exercício é recomendado pela OMS para dor lombar crônica."},
+       {"titulo": "Continue ativo", "texto": "Repouso prolongado tende a atrasar a recuperação."},
+       {"titulo": "Procure avaliação", "texto": "Dor que persiste merece um olhar individual."}]},
+    {"tipo": "cta", "titulo": "Pare de brigar com a sua postura. **Comece a se mover.**",
+     "texto": "Salve este post e mande para quem vive corrigindo a postura de todo mundo.",
+     "referencias": "Swain et al., J Biomech, 2019. Saraceni et al., JOSPT, 2020. OMS, Diretriz para dor lombar crônica, 2023."}
+  ],
+  "legenda": "Sua postura não é a vilã que te contaram. 🦴"
+}
