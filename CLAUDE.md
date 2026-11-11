@@ -11,7 +11,7 @@ Status: `pendente` → `rascunho` (gerado, aguardando aprovação) → `aprovado
 
 ## Como criar um carrossel
 1. Leia o item em `fila.json` (tema, ângulo, referências a conferir, ilustração sugerida).
-2. **Ciência primeiro**: confirme cada referência no PubMed (ferramentas `mcp__PubMed__*`), guarde DOI. Nunca invente número, estudo ou autor. Se a evidência for fraca, diga isso no slide. Use linguagem acessível ao paciente.
+2. **Ciência primeiro (exigência do Lucas, vale para TODO post, inclusive os leves e institucionais)**: antes de escrever, busque e leia no PubMed (ferramentas `mcp__PubMed__*`) as pesquisas que sustentam o tema. Cada afirmação e cada número do carrossel precisa vir de um artigo confirmado no PubMed; guarde PMID e DOI em `carrosseis/<pasta>/fontes.md`. As referências em `fila.json` são só sugestões: se uma não se confirmar, busque outra no PubMed ou ajuste o conteúdo. Nunca invente número, estudo ou autor. Se a evidência for fraca, diga isso no slide. Use linguagem acessível ao paciente. Ao mandar para aprovação, liste as fontes com o link do DOI.
 3. Escreva `carrosseis/<pasta>/spec.json` seguindo o modelo `carrosseis/2026-11-postura/spec.json`.
    Tipos de slide: `capa`, `mito`, `evidencia`, `destaque`, `lista`, `passos`, `cta` (ver `pipeline/build.py`).
    Estrutura recomendada (7 slides): capa (gancho) → mito/problema → evidência (número forte) → destaque/curiosidade → lista (o que importa) → passos (na prática) → cta (salvar, referências).

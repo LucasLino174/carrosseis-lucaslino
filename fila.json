@@ -1,54 +1,640 @@
 {
-  "fuso": "America/Bahia",
-  "agenda": {"segunda": "19:00", "quarta": "12:00", "sexta": "12:00"},
-  "status_possiveis": ["pendente", "rascunho", "aprovado", "publicado", "pulado"],
-  "posts": [
-    {"id": "postura", "data": "2026-11-11", "hora": "15:13", "pasta": "carrosseis/2026-11-postura",
-     "tema": "A sua postura não é culpada pela sua dor nas costas", "status": "publicado", "media_id": "18120786467281517"},
-
-    {"id": "corrida-joelho", "data": "2026-11-16", "hora": "19:00", "pasta": "carrosseis/2026-11-16-corrida-joelho", "status": "pendente",
-     "tema": "Correr não destrói o joelho",
-     "angulo": "Corredores recreativos têm menos artrose de joelho e quadril que sedentários; o que lesiona é aumento brusco de volume (gestão de carga). Conferir: Alentorn-Geli et al., JOSPT 2017 (meta-análise), e evidência sobre progressão de carga.",
-     "ilustracao_sugerida": "joelho em vista lateral (fêmur, tíbia, patela, menisco/cartilagem em verde-água)"},
-
-    {"id": "alongamento", "data": "2026-11-18", "hora": "12:00", "pasta": "carrosseis/2026-11-18-alongamento", "status": "pendente",
-     "tema": "Alongar antes do treino não previne lesão",
-     "angulo": "Alongamento estático pré-treino não reduz lesões; aquecimento ativo/neuromuscular (ex.: FIFA 11+) reduz. Conferir: Lauersen et al., BJSM 2014; meta-análises do FIFA 11+ (ex.: Thorborg et al., BJSM 2017).",
-     "ilustracao_sugerida": "músculos da coxa (isquiotibiais/quadríceps) com fibras em volume"},
-
-    {"id": "ombro-volei", "data": "2026-11-20", "hora": "12:00", "pasta": "carrosseis/2026-11-20-ombro-volei", "status": "pendente",
-     "tema": "Ombro do jogador de vôlei: exercícios que previnem lesão",
-     "angulo": "Programas preventivos de manguito rotador e escápula reduzem problemas de ombro em atletas overhead. Conferir: Andersson et al., BJSM 2017 (OSTRC Shoulder Injury Prevention Programme). Tema ligado às revisões do próprio Lucas.",
-     "ilustracao_sugerida": "articulação do ombro (úmero, escápula, clavícula, manguito em verde-água)"},
-
-    {"id": "hernia-exame", "data": "2026-11-23", "hora": "19:00", "pasta": "carrosseis/2026-11-23-hernia-exame", "status": "pendente",
-     "tema": "Seu exame mostra hérnia, mas isso não quer dizer que ela causa a sua dor",
-     "angulo": "Achados degenerativos (desidratação discal, protrusão) são muito comuns em pessoas sem dor e aumentam com a idade. Conferir: Brinjikji et al., AJNR 2015.",
-     "ilustracao_sugerida": "disco intervertebral em corte com núcleo pulposo, reutilizar o estilo da coluna"},
-
-    {"id": "musculacao-60", "data": "2026-11-25", "hora": "12:00", "pasta": "carrosseis/2026-11-25-musculacao-60", "status": "pendente",
-     "tema": "Musculação depois dos 60 é remédio",
-     "angulo": "Treino de força combate sarcopenia e melhora função; programas de exercício (ex.: Otago) reduzem quedas. Conferir: Sherrington et al., Cochrane 2019; diretrizes de sarcopenia.",
-     "ilustracao_sugerida": "fibras musculares/bíceps em volume ou idoso estilizado com halter, em traço anatômico"},
-
-    {"id": "tendinite", "data": "2026-11-27", "hora": "12:00", "pasta": "carrosseis/2026-11-27-tendinite", "status": "pendente",
-     "tema": "Tendinite não melhora só com repouso",
-     "angulo": "Tendinopatia responde a carga progressiva (isometria, exercício pesado e lento); repouso total tende a reduzir a capacidade do tendão. Conferir: revisões sobre exercício em tendinopatia patelar/Aquiles (ex.: Malliaras et al.).",
-     "ilustracao_sugerida": "tendão de Aquiles/calcâneo ou tendão patelar com fibras"},
-
-    {"id": "forca-corredor", "data": "2026-11-30", "hora": "19:00", "pasta": "carrosseis/2026-11-30-forca-corredor", "status": "pendente",
-     "tema": "Treino de força é o seguro do corredor",
-     "angulo": "Treino de força reduz lesões esportivas; alongamento não. Conferir: Lauersen et al., BJSM 2014. Conectar com calistenia.",
-     "ilustracao_sugerida": "perna de corredor em vista lateral com músculos em volume"},
-
-    {"id": "agulhamento", "data": "2026-12-02", "hora": "12:00", "pasta": "carrosseis/2026-12-02-agulhamento", "status": "pendente",
-     "tema": "Agulhamento a seco: o que a ciência realmente mostra",
-     "angulo": "Efeito de curto prazo na dor; melhor combinado com exercício; evidência heterogênea. Conferir revisões sistemáticas recentes. Tema de trabalho apresentado pelo próprio Lucas (ombro de atletas overhead).",
-     "ilustracao_sugerida": "agulha fina entrando em fibra muscular (trapézio/ombro), traço anatômico"},
-
-    {"id": "entorse-tornozelo", "data": "2026-12-04", "hora": "12:00", "pasta": "carrosseis/2026-12-04-entorse-tornozelo", "status": "pendente",
-     "tema": "Entorse de tornozelo não é 'só uma torcida'",
-     "angulo": "Recidiva e instabilidade crônica são comuns; treino de equilíbrio/propriocepção reduz recidivas. Conferir: Doherty et al., BJSM 2017 (consenso/meta-análise); diretrizes de entorse lateral.",
-     "ilustracao_sugerida": "tornozelo/pé em vista lateral com ligamento talofibular anterior em verde-água"}
-  ]
+ "fuso": "America/Bahia",
+ "agenda": {
+  "segunda": "19:00",
+  "quarta": "12:00",
+  "sexta": "12:00"
+ },
+ "status_possiveis": [
+  "pendente",
+  "rascunho",
+  "aprovado",
+  "publicado",
+  "pulado"
+ ],
+ "posts": [
+  {
+   "id": "postura",
+   "data": "2026-11-11",
+   "hora": "15:13",
+   "pasta": "carrosseis/2026-11-postura",
+   "tema": "A sua postura não é culpada pela sua dor nas costas",
+   "status": "publicado",
+   "media_id": "18120786467281517"
+  },
+  {
+   "id": "corrida-joelho",
+   "data": "2026-11-16",
+   "hora": "19:00",
+   "pasta": "carrosseis/2026-11-16-corrida-joelho",
+   "status": "pendente",
+   "tema": "Correr não destrói o joelho",
+   "angulo": "Corredores recreativos têm menos artrose de joelho e quadril que sedentários; o que lesiona é aumento brusco de volume (gestão de carga). Conferir: Alentorn-Geli et al., JOSPT 2017 (meta-análise), e evidência sobre progressão de carga.",
+   "ilustracao_sugerida": "joelho em vista lateral (fêmur, tíbia, patela, menisco/cartilagem em verde-água)"
+  },
+  {
+   "id": "alongamento",
+   "data": "2026-11-18",
+   "hora": "12:00",
+   "pasta": "carrosseis/2026-11-18-alongamento",
+   "status": "pendente",
+   "tema": "Alongar antes do treino não previne lesão",
+   "angulo": "Alongamento estático pré-treino não reduz lesões; aquecimento ativo/neuromuscular (ex.: FIFA 11+) reduz. Conferir: Lauersen et al., BJSM 2014; meta-análises do FIFA 11+ (ex.: Thorborg et al., BJSM 2017).",
+   "ilustracao_sugerida": "músculos da coxa (isquiotibiais/quadríceps) com fibras em volume"
+  },
+  {
+   "id": "ombro-volei",
+   "data": "2026-11-20",
+   "hora": "12:00",
+   "pasta": "carrosseis/2026-11-20-ombro-volei",
+   "status": "pendente",
+   "tema": "Ombro do jogador de vôlei: exercícios que previnem lesão",
+   "angulo": "Programas preventivos de manguito rotador e escápula reduzem problemas de ombro em atletas overhead. Conferir: Andersson et al., BJSM 2017 (OSTRC Shoulder Injury Prevention Programme). Tema ligado às revisões do próprio Lucas.",
+   "ilustracao_sugerida": "articulação do ombro (úmero, escápula, clavícula, manguito em verde-água)"
+  },
+  {
+   "id": "hernia-exame",
+   "data": "2026-11-23",
+   "hora": "19:00",
+   "pasta": "carrosseis/2026-11-23-hernia-exame",
+   "status": "pendente",
+   "tema": "Seu exame mostra hérnia, mas isso não quer dizer que ela causa a sua dor",
+   "angulo": "Achados degenerativos (desidratação discal, protrusão) são muito comuns em pessoas sem dor e aumentam com a idade. Conferir: Brinjikji et al., AJNR 2015.",
+   "ilustracao_sugerida": "disco intervertebral em corte com núcleo pulposo, reutilizar o estilo da coluna"
+  },
+  {
+   "id": "musculacao-60",
+   "data": "2026-11-25",
+   "hora": "12:00",
+   "pasta": "carrosseis/2026-11-25-musculacao-60",
+   "status": "pendente",
+   "tema": "Musculação depois dos 60 é remédio",
+   "angulo": "Treino de força combate sarcopenia e melhora função; programas de exercício (ex.: Otago) reduzem quedas. Conferir: Sherrington et al., Cochrane 2019; diretrizes de sarcopenia.",
+   "ilustracao_sugerida": "fibras musculares/bíceps em volume ou idoso estilizado com halter, em traço anatômico"
+  },
+  {
+   "id": "tendinite",
+   "data": "2026-11-27",
+   "hora": "12:00",
+   "pasta": "carrosseis/2026-11-27-tendinite",
+   "status": "pendente",
+   "tema": "Tendinite não melhora só com repouso",
+   "angulo": "Tendinopatia responde a carga progressiva (isometria, exercício pesado e lento); repouso total tende a reduzir a capacidade do tendão. Conferir: revisões sobre exercício em tendinopatia patelar/Aquiles (ex.: Malliaras et al.).",
+   "ilustracao_sugerida": "tendão de Aquiles/calcâneo ou tendão patelar com fibras"
+  },
+  {
+   "id": "forca-corredor",
+   "data": "2026-11-30",
+   "hora": "19:00",
+   "pasta": "carrosseis/2026-11-30-forca-corredor",
+   "status": "pendente",
+   "tema": "Treino de força é o seguro do corredor",
+   "angulo": "Treino de força reduz lesões esportivas; alongamento não. Conferir: Lauersen et al., BJSM 2014. Conectar com calistenia.",
+   "ilustracao_sugerida": "perna de corredor em vista lateral com músculos em volume"
+  },
+  {
+   "id": "agulhamento",
+   "data": "2026-12-02",
+   "hora": "12:00",
+   "pasta": "carrosseis/2026-12-02-agulhamento",
+   "status": "pendente",
+   "tema": "Agulhamento a seco: o que a ciência realmente mostra",
+   "angulo": "Efeito de curto prazo na dor; melhor combinado com exercício; evidência heterogênea. Conferir revisões sistemáticas recentes. Tema de trabalho apresentado pelo próprio Lucas (ombro de atletas overhead).",
+   "ilustracao_sugerida": "agulha fina entrando em fibra muscular (trapézio/ombro), traço anatômico"
+  },
+  {
+   "id": "entorse-tornozelo",
+   "data": "2026-12-04",
+   "hora": "12:00",
+   "pasta": "carrosseis/2026-12-04-entorse-tornozelo",
+   "status": "pendente",
+   "tema": "Entorse de tornozelo não é 'só uma torcida'",
+   "angulo": "Recidiva e instabilidade crônica são comuns; treino de equilíbrio/propriocepção reduz recidivas. Conferir: Doherty et al., BJSM 2017 (consenso/meta-análise); diretrizes de entorse lateral.",
+   "ilustracao_sugerida": "tornozelo/pé em vista lateral com ligamento talofibular anterior em verde-água"
+  },
+  {
+   "id": "estalar-as-costas-nao-coloca",
+   "data": "2026-12-07",
+   "hora": "19:00",
+   "pasta": "carrosseis/2026-12-07-estalar-as-costas-nao-coloca",
+   "status": "pendente",
+   "tema": "Estalar as costas não \"coloca nada no lugar\"",
+   "pilar": "Mitos de tratamento",
+   "angulo": "Referências sugeridas (confirmar no PubMed): O estalo é cavitação (gás) na articulação. Kawchuk et al., PLoS One 2015 (cavitação em tempo real na RM)"
+  },
+  {
+   "id": "dor-nao-e-o-mesmo",
+   "data": "2026-12-09",
+   "hora": "12:00",
+   "pasta": "carrosseis/2026-12-09-dor-nao-e-o-mesmo",
+   "status": "pendente",
+   "tema": "Dor não é o mesmo que lesão",
+   "pilar": "Dor e coluna",
+   "angulo": "Referências sugeridas (confirmar no PubMed): Educação em neurociência da dor: Louw et al., Physiother Theory Pract 2016 (revisão sistemática)"
+  },
+  {
+   "id": "agachar-com-o-joelho-passando",
+   "data": "2026-12-11",
+   "hora": "12:00",
+   "pasta": "carrosseis/2026-12-11-agachar-com-o-joelho-passando",
+   "status": "pendente",
+   "tema": "Agachar com o joelho passando da ponta do pé é perigoso?",
+   "pilar": "Biomecânica",
+   "angulo": "Referências sugeridas (confirmar no PubMed): Restringir o joelho aumenta a carga no quadril e na lombar: Fry et al., J Strength Cond Res 2003"
+  },
+  {
+   "id": "ruptura-no-manguito-no-exame",
+   "data": "2026-12-14",
+   "hora": "19:00",
+   "pasta": "carrosseis/2026-12-14-ruptura-no-manguito-no-exame",
+   "status": "pendente",
+   "tema": "Ruptura no manguito no exame, mas sem dor: é comum",
+   "pilar": "Ortopedia",
+   "angulo": "Referências sugeridas (confirmar no PubMed): Rupturas assintomáticas aumentam com a idade: Minagawa et al., J Orthop 2013; Sher et al., JBJS 1995"
+  },
+  {
+   "id": "parar-de-treinar-nas-ferias",
+   "data": "2026-12-16",
+   "hora": "12:00",
+   "pasta": "carrosseis/2026-12-16-parar-de-treinar-nas-ferias",
+   "status": "pendente",
+   "tema": "Parar de treinar nas férias: quanto você perde?",
+   "pilar": "Treino e força",
+   "angulo": "Referências sugeridas (confirmar no PubMed): Destreino: Mujika e Padilla, Sports Med 2000",
+   "observacao": "Férias de fim de ano"
+  },
+  {
+   "id": "travou-a-coluna-repouso-nao",
+   "data": "2026-12-18",
+   "hora": "12:00",
+   "pasta": "carrosseis/2026-12-18-travou-a-coluna-repouso-nao",
+   "status": "pendente",
+   "tema": "Travou a coluna? Repouso não é a melhor saída",
+   "pilar": "Dor e coluna",
+   "angulo": "Referências sugeridas (confirmar no PubMed): Manter-se ativo é melhor que repouso: Dahm et al., Cochrane 2010; diretrizes de lombalgia"
+  },
+  {
+   "id": "sono-ruim-aumenta-a-dor",
+   "data": "2026-12-21",
+   "hora": "19:00",
+   "pasta": "carrosseis/2026-12-21-sono-ruim-aumenta-a-dor",
+   "status": "pendente",
+   "tema": "Sono ruim aumenta a dor (e a dor piora o sono)",
+   "pilar": "Dor e coluna",
+   "angulo": "Referências sugeridas (confirmar no PubMed): Finan et al., J Pain 2013 (revisão)"
+  },
+  {
+   "id": "horas-de-carro-ou-aviao",
+   "data": "2026-12-23",
+   "hora": "12:00",
+   "pasta": "carrosseis/2026-12-23-horas-de-carro-ou-aviao",
+   "status": "pendente",
+   "tema": "Horas de carro ou avião nas festas: como chegar sem dor",
+   "pilar": "Dor e coluna",
+   "angulo": "Referências sugeridas (confirmar no PubMed): Pausas e variação de posição; buscar no PubMed evidência sobre pausas ativas/comportamento sedentário e dor",
+   "observacao": "Véspera de Natal: conteúdo leve"
+  },
+  {
+   "id": "natal-o-movimento-e-o",
+   "data": "2026-12-25",
+   "hora": "12:00",
+   "pasta": "carrosseis/2026-12-25-natal-o-movimento-e-o",
+   "status": "pendente",
+   "tema": "Natal: o movimento é o melhor presente",
+   "pilar": "Institucional",
+   "angulo": "Referências sugeridas (confirmar no PubMed): Post leve; mesmo assim usar ao menos um dado do PubMed (ex.: atividade física e saúde, Bull et al., BJSM 2020)",
+   "observacao": "Natal: leve"
+  },
+  {
+   "id": "vai-correr-a-sao-silvestre",
+   "data": "2026-12-28",
+   "hora": "19:00",
+   "pasta": "carrosseis/2026-12-28-vai-correr-a-sao-silvestre",
+   "status": "pendente",
+   "tema": "Vai correr a São Silvestre? Como cruzar a linha sem lesão",
+   "pilar": "Corrida",
+   "angulo": "Referências sugeridas (confirmar no PubMed): Gabbett, BJSM 2016 (paradoxo treino-lesão)",
+   "observacao": "São Silvestre em 31/12"
+  },
+  {
+   "id": "metas-de-2027-por-que",
+   "data": "2026-12-30",
+   "hora": "12:00",
+   "pasta": "carrosseis/2026-12-30-metas-de-2027-por-que",
+   "status": "pendente",
+   "tema": "Metas de 2027: por que quase todo mundo larga o treino em fevereiro",
+   "pilar": "Treino e força",
+   "angulo": "Referências sugeridas (confirmar no PubMed): Bull et al., BJSM 2020 (diretrizes OMS); buscar evidência sobre adesão ao exercício",
+   "observacao": "Ano novo"
+  },
+  {
+   "id": "quanto-exercicio-voce-precisa-a",
+   "data": "2027-01-01",
+   "hora": "12:00",
+   "pasta": "carrosseis/2027-01-01-quanto-exercicio-voce-precisa-a",
+   "status": "pendente",
+   "tema": "Quanto exercício você precisa? A recomendação da OMS explicada",
+   "pilar": "Treino e força",
+   "angulo": "Referências sugeridas (confirmar no PubMed): Bull et al., BJSM 2020",
+   "observacao": "Feriado: post leve"
+  },
+  {
+   "id": "voltou-a-academia-em-janeiro",
+   "data": "2027-01-04",
+   "hora": "19:00",
+   "pasta": "carrosseis/2027-01-04-voltou-a-academia-em-janeiro",
+   "status": "pendente",
+   "tema": "Voltou à academia em janeiro? O erro que mais lesiona",
+   "pilar": "Treino e força",
+   "angulo": "Referências sugeridas (confirmar no PubMed): Gabbett, BJSM 2016",
+   "observacao": "Volta às academias"
+  },
+  {
+   "id": "dor-muscular-no-dia-seguinte",
+   "data": "2027-01-06",
+   "hora": "12:00",
+   "pasta": "carrosseis/2027-01-06-dor-muscular-no-dia-seguinte",
+   "status": "pendente",
+   "tema": "Dor muscular no dia seguinte não prova que o treino foi bom",
+   "pilar": "Treino e força",
+   "angulo": "Referências sugeridas (confirmar no PubMed): Schoenfeld e Contreras, Strength Cond J 2013"
+  },
+  {
+   "id": "correr-na-areia-vantagens-e",
+   "data": "2027-01-08",
+   "hora": "12:00",
+   "pasta": "carrosseis/2027-01-08-correr-na-areia-vantagens-e",
+   "status": "pendente",
+   "tema": "Correr na areia: vantagens e cuidados",
+   "pilar": "Corrida",
+   "angulo": "Referências sugeridas (confirmar no PubMed): Lejeune et al., J Exp Biol 1998",
+   "observacao": "Verão"
+  },
+  {
+   "id": "gelo-depois-da-lesao-ainda",
+   "data": "2027-01-11",
+   "hora": "19:00",
+   "pasta": "carrosseis/2027-01-11-gelo-depois-da-lesao-ainda",
+   "status": "pendente",
+   "tema": "Gelo depois da lesão ainda faz sentido? Conheça o PEACE & LOVE",
+   "pilar": "Mitos de tratamento",
+   "angulo": "Referências sugeridas (confirmar no PubMed): Dubois e Esculier, BJSM 2020"
+  },
+  {
+   "id": "joelho-que-estala-precisa-de",
+   "data": "2027-01-13",
+   "hora": "12:00",
+   "pasta": "carrosseis/2027-01-13-joelho-que-estala-precisa-de",
+   "status": "pendente",
+   "tema": "Joelho que estala precisa de tratamento?",
+   "pilar": "Ortopedia",
+   "angulo": "Referências sugeridas (confirmar no PubMed): Prevalência de crepitação em pessoas sem dor (buscar no PubMed, ex.: Robertson et al., 2017)"
+  },
+  {
+   "id": "fascite-plantar-o-que-realmente",
+   "data": "2027-01-15",
+   "hora": "12:00",
+   "pasta": "carrosseis/2027-01-15-fascite-plantar-o-que-realmente",
+   "status": "pendente",
+   "tema": "Fascite plantar: o que realmente funciona",
+   "pilar": "Ortopedia",
+   "angulo": "Referências sugeridas (confirmar no PubMed): Rathleff et al., Scand J Med Sci Sports 2015; diretriz JOSPT de dor no calcanhar 2023",
+   "observacao": "Verão"
+  },
+  {
+   "id": "tenis-caro-e-palmilha-previnem",
+   "data": "2027-01-18",
+   "hora": "19:00",
+   "pasta": "carrosseis/2027-01-18-tenis-caro-e-palmilha-previnem",
+   "status": "pendente",
+   "tema": "Tênis caro e palmilha previnem lesão na corrida?",
+   "pilar": "Corrida",
+   "angulo": "Referências sugeridas (confirmar no PubMed): Nielsen et al., BJSM 2014; Nigg et al., BJSM 2015"
+  },
+  {
+   "id": "calistenia-constroi-forca-de-verdade",
+   "data": "2027-01-20",
+   "hora": "12:00",
+   "pasta": "carrosseis/2027-01-20-calistenia-constroi-forca-de-verdade",
+   "status": "pendente",
+   "tema": "Calistenia constrói força de verdade",
+   "pilar": "Treino e força",
+   "angulo": "Referências sugeridas (confirmar no PubMed): Calatayud et al., J Strength Cond Res 2015"
+  },
+  {
+   "id": "pilates-para-dor-lombar-o",
+   "data": "2027-01-22",
+   "hora": "12:00",
+   "pasta": "carrosseis/2027-01-22-pilates-para-dor-lombar-o",
+   "status": "pendente",
+   "tema": "Pilates para dor lombar: o que a ciência diz",
+   "pilar": "Dor e coluna",
+   "angulo": "Referências sugeridas (confirmar no PubMed): Yamato et al., Cochrane 2015"
+  },
+  {
+   "id": "pe-chato-causa-dor-nem",
+   "data": "2027-01-25",
+   "hora": "19:00",
+   "pasta": "carrosseis/2027-01-25-pe-chato-causa-dor-nem",
+   "status": "pendente",
+   "tema": "Pé chato causa dor? Nem sempre",
+   "pilar": "Biomecânica",
+   "angulo": "Referências sugeridas (confirmar no PubMed): Buscar revisões sobre pé plano e dor/lesão"
+  },
+  {
+   "id": "pescoco-de-celular-causa-dor",
+   "data": "2027-01-27",
+   "hora": "12:00",
+   "pasta": "carrosseis/2027-01-27-pescoco-de-celular-causa-dor",
+   "status": "pendente",
+   "tema": "\"Pescoço de celular\" causa dor? O que os estudos mostram",
+   "pilar": "Dor e coluna",
+   "angulo": "Referências sugeridas (confirmar no PubMed): Damasceno et al., Eur Spine J 2018"
+  },
+  {
+   "id": "dor-no-ombro-ao-levantar",
+   "data": "2027-01-29",
+   "hora": "12:00",
+   "pasta": "carrosseis/2027-01-29-dor-no-ombro-ao-levantar",
+   "status": "pendente",
+   "tema": "Dor no ombro ao levantar o braço: exercício é a primeira linha",
+   "pilar": "Ortopedia",
+   "angulo": "Referências sugeridas (confirmar no PubMed): Beard et al., Lancet 2018 (CSAW); Paavola et al., BMJ 2018 (FIMPACT)"
+  },
+  {
+   "id": "cirurgia-de-menisco-no-desgaste",
+   "data": "2027-02-01",
+   "hora": "19:00",
+   "pasta": "carrosseis/2027-02-01-cirurgia-de-menisco-no-desgaste",
+   "status": "pendente",
+   "tema": "Cirurgia de menisco no desgaste: igual à fisioterapia",
+   "pilar": "Ortopedia",
+   "angulo": "Referências sugeridas (confirmar no PubMed): Kise et al., BMJ 2016; Sihvonen et al., NEJM 2013"
+  },
+  {
+   "id": "artrose-no-joelho-exercicio-e",
+   "data": "2027-02-03",
+   "hora": "12:00",
+   "pasta": "carrosseis/2027-02-03-artrose-no-joelho-exercicio-e",
+   "status": "pendente",
+   "tema": "Artrose no joelho: exercício é tratamento, não proibição",
+   "pilar": "Geriatria",
+   "angulo": "Referências sugeridas (confirmar no PubMed): Fransen et al., Cochrane 2015; Bannuru et al., OARSI 2019"
+  },
+  {
+   "id": "carnaval-sem-dor-nos-pes",
+   "data": "2027-02-05",
+   "hora": "12:00",
+   "pasta": "carrosseis/2027-02-05-carnaval-sem-dor-nos-pes",
+   "status": "pendente",
+   "tema": "Carnaval sem dor nos pés e joelhos: prepare o corpo",
+   "pilar": "Esportiva",
+   "angulo": "Referências sugeridas (confirmar no PubMed): Buscar no PubMed evidência sobre carga, calçado e dor em pé/joelho",
+   "observacao": "Antes do Carnaval"
+  },
+  {
+   "id": "caibra-e-so-falta-de",
+   "data": "2027-02-08",
+   "hora": "19:00",
+   "pasta": "carrosseis/2027-02-08-caibra-e-so-falta-de",
+   "status": "pendente",
+   "tema": "Cãibra é só falta de água? Não é bem assim",
+   "pilar": "Esportiva",
+   "angulo": "Referências sugeridas (confirmar no PubMed): Schwellnus, BJSM 2009; buscar revisões sobre cãibra associada ao exercício",
+   "observacao": "Segunda de Carnaval"
+  },
+  {
+   "id": "voltando-do-carnaval-como-retomar",
+   "data": "2027-02-10",
+   "hora": "12:00",
+   "pasta": "carrosseis/2027-02-10-voltando-do-carnaval-como-retomar",
+   "status": "pendente",
+   "tema": "Voltando do Carnaval: como retomar o treino sem se machucar",
+   "pilar": "Treino e força",
+   "angulo": "Referências sugeridas (confirmar no PubMed): Gabbett, BJSM 2016",
+   "observacao": "Quarta de Cinzas"
+  },
+  {
+   "id": "trabalha-sentado-o-dia-todo",
+   "data": "2027-02-12",
+   "hora": "12:00",
+   "pasta": "carrosseis/2027-02-12-trabalha-sentado-o-dia-todo",
+   "status": "pendente",
+   "tema": "Trabalha sentado o dia todo? O que realmente ajuda a coluna",
+   "pilar": "Dor e coluna",
+   "angulo": "Referências sugeridas (confirmar no PubMed): Shrestha et al., Cochrane 2018"
+  },
+  {
+   "id": "o-teste-de-sentar-e",
+   "data": "2027-02-15",
+   "hora": "19:00",
+   "pasta": "carrosseis/2027-02-15-o-teste-de-sentar-e",
+   "status": "pendente",
+   "tema": "O teste de sentar e levantar do chão diz muito sobre sua saúde",
+   "pilar": "Geriatria",
+   "angulo": "Referências sugeridas (confirmar no PubMed): Brito et al., Eur J Prev Cardiol 2014"
+  },
+  {
+   "id": "forca-do-aperto-de-mao",
+   "data": "2027-02-17",
+   "hora": "12:00",
+   "pasta": "carrosseis/2027-02-17-forca-do-aperto-de-mao",
+   "status": "pendente",
+   "tema": "Força do aperto de mão: um sinal vital escondido",
+   "pilar": "Geriatria",
+   "angulo": "Referências sugeridas (confirmar no PubMed): Leong et al., Lancet 2015 (PURE)"
+  },
+  {
+   "id": "equilibrio-se-treina-4-exercicios",
+   "data": "2027-02-19",
+   "hora": "12:00",
+   "pasta": "carrosseis/2027-02-19-equilibrio-se-treina-4-exercicios",
+   "status": "pendente",
+   "tema": "Equilíbrio se treina: 4 exercícios para prevenir quedas",
+   "pilar": "Geriatria",
+   "angulo": "Referências sugeridas (confirmar no PubMed): Sherrington et al., Cochrane 2019; programa Otago"
+  },
+  {
+   "id": "osteoporose-musculacao-e-perigosa-ou",
+   "data": "2027-02-22",
+   "hora": "19:00",
+   "pasta": "carrosseis/2027-02-22-osteoporose-musculacao-e-perigosa-ou",
+   "status": "pendente",
+   "tema": "Osteoporose: musculação é perigosa ou protege?",
+   "pilar": "Geriatria",
+   "angulo": "Referências sugeridas (confirmar no PubMed): Watson et al., J Bone Miner Res 2018 (LIFTMOR)"
+  },
+  {
+   "id": "precisa-mesmo-de-10-mil",
+   "data": "2027-02-24",
+   "hora": "12:00",
+   "pasta": "carrosseis/2027-02-24-precisa-mesmo-de-10-mil",
+   "status": "pendente",
+   "tema": "Precisa mesmo de 10 mil passos por dia?",
+   "pilar": "Treino e força",
+   "angulo": "Referências sugeridas (confirmar no PubMed): Paluch et al., Lancet Public Health 2022"
+  },
+  {
+   "id": "dor-no-ombro-no-supino",
+   "data": "2027-02-26",
+   "hora": "12:00",
+   "pasta": "carrosseis/2027-02-26-dor-no-ombro-no-supino",
+   "status": "pendente",
+   "tema": "Dor no ombro no supino e no desenvolvimento: ajuste antes de parar",
+   "pilar": "Esportiva",
+   "angulo": "Referências sugeridas (confirmar no PubMed): Buscar revisões sobre exercício e modificação de carga em dor de ombro"
+  },
+  {
+   "id": "dor-na-lateral-do-quadril",
+   "data": "2027-03-01",
+   "hora": "19:00",
+   "pasta": "carrosseis/2027-03-01-dor-na-lateral-do-quadril",
+   "status": "pendente",
+   "tema": "Dor na lateral do quadril do corredor: tendinopatia glútea",
+   "pilar": "Corrida",
+   "angulo": "Referências sugeridas (confirmar no PubMed): Mellor et al., BMJ 2018 (LEAP)"
+  },
+  {
+   "id": "infiltracao-no-tendao-alivio-rapido",
+   "data": "2027-03-03",
+   "hora": "12:00",
+   "pasta": "carrosseis/2027-03-03-infiltracao-no-tendao-alivio-rapido",
+   "status": "pendente",
+   "tema": "Infiltração no tendão: alívio rápido, recaída depois",
+   "pilar": "Mitos de tratamento",
+   "angulo": "Referências sugeridas (confirmar no PubMed): Coombes et al., Lancet 2010; Coombes et al., JAMA 2013"
+  },
+  {
+   "id": "cotovelo-de-tenista-o-exercicio",
+   "data": "2027-03-05",
+   "hora": "12:00",
+   "pasta": "carrosseis/2027-03-05-cotovelo-de-tenista-o-exercicio",
+   "status": "pendente",
+   "tema": "Cotovelo de tenista: o exercício certo",
+   "pilar": "Ortopedia",
+   "angulo": "Referências sugeridas (confirmar no PubMed): Buscar revisões sobre exercício na epicondilalgia lateral"
+  },
+  {
+   "id": "mulher-e-musculacao-os-mitos",
+   "data": "2027-03-08",
+   "hora": "19:00",
+   "pasta": "carrosseis/2027-03-08-mulher-e-musculacao-os-mitos",
+   "status": "pendente",
+   "tema": "Mulher e musculação: os mitos que atrapalham",
+   "pilar": "Treino e força",
+   "angulo": "Referências sugeridas (confirmar no PubMed): Buscar revisões sobre treino de força em mulheres",
+   "observacao": "Dia da Mulher"
+  },
+  {
+   "id": "lca-quando-e-seguro-voltar",
+   "data": "2027-03-10",
+   "hora": "12:00",
+   "pasta": "carrosseis/2027-03-10-lca-quando-e-seguro-voltar",
+   "status": "pendente",
+   "tema": "LCA: quando é seguro voltar a jogar?",
+   "pilar": "Esportiva",
+   "angulo": "Referências sugeridas (confirmar no PubMed): Grindem et al., BJSM 2016"
+  },
+  {
+   "id": "rompeu-o-lca-cirurgia-e",
+   "data": "2027-03-12",
+   "hora": "12:00",
+   "pasta": "carrosseis/2027-03-12-rompeu-o-lca-cirurgia-e",
+   "status": "pendente",
+   "tema": "Rompeu o LCA: cirurgia é a única saída?",
+   "pilar": "Esportiva",
+   "angulo": "Referências sugeridas (confirmar no PubMed): Frobell et al., NEJM 2010 (KANON)"
+  },
+  {
+   "id": "prevencao-de-lesao-de-lca",
+   "data": "2027-03-15",
+   "hora": "19:00",
+   "pasta": "carrosseis/2027-03-15-prevencao-de-lesao-de-lca",
+   "status": "pendente",
+   "tema": "Prevenção de lesão de LCA: o treino que funciona",
+   "pilar": "Esportiva",
+   "angulo": "Referências sugeridas (confirmar no PubMed): Webster e Hewett, J Orthop Res 2018"
+  },
+  {
+   "id": "joelho-de-saltador-no-volei",
+   "data": "2027-03-17",
+   "hora": "12:00",
+   "pasta": "carrosseis/2027-03-17-joelho-de-saltador-no-volei",
+   "status": "pendente",
+   "tema": "Joelho de saltador no vôlei: por que dói e como tratar",
+   "pilar": "Vôlei",
+   "angulo": "Referências sugeridas (confirmar no PubMed): Lian et al., Am J Sports Med 2005; exercício em tendinopatia patelar"
+  },
+  {
+   "id": "entorse-no-volei-o-treino",
+   "data": "2027-03-19",
+   "hora": "12:00",
+   "pasta": "carrosseis/2027-03-19-entorse-no-volei-o-treino",
+   "status": "pendente",
+   "tema": "Entorse no vôlei: o treino que evita a recidiva",
+   "pilar": "Vôlei",
+   "angulo": "Referências sugeridas (confirmar no PubMed): Verhagen et al., Am J Sports Med 2004"
+  },
+  {
+   "id": "dor-ciatica-quando-esperar-e",
+   "data": "2027-03-22",
+   "hora": "19:00",
+   "pasta": "carrosseis/2027-03-22-dor-ciatica-quando-esperar-e",
+   "status": "pendente",
+   "tema": "Dor ciática: quando esperar e quando se preocupar",
+   "pilar": "Dor e coluna",
+   "angulo": "Referências sugeridas (confirmar no PubMed): Diretrizes de dor radicular (ex.: NICE 2016) e estudos de prognóstico no PubMed"
+  },
+  {
+   "id": "kinesio-tape-funciona",
+   "data": "2027-03-24",
+   "hora": "12:00",
+   "pasta": "carrosseis/2027-03-24-kinesio-tape-funciona",
+   "status": "pendente",
+   "tema": "Kinesio tape funciona?",
+   "pilar": "Mitos de tratamento",
+   "angulo": "Referências sugeridas (confirmar no PubMed): Parreira et al., J Physiother 2014; Lim e Tay, BJSM 2015"
+  },
+  {
+   "id": "rolo-de-liberacao-miofascial-o",
+   "data": "2027-03-26",
+   "hora": "12:00",
+   "pasta": "carrosseis/2027-03-26-rolo-de-liberacao-miofascial-o",
+   "status": "pendente",
+   "tema": "Rolo de liberação miofascial: o que ele faz de fato",
+   "pilar": "Mitos de tratamento",
+   "angulo": "Referências sugeridas (confirmar no PubMed): Wiewelhove et al., Front Physiol 2019",
+   "observacao": "Sexta-feira Santa"
+  },
+  {
+   "id": "dor-lombar-aguda-quanto-tempo",
+   "data": "2027-03-29",
+   "hora": "19:00",
+   "pasta": "carrosseis/2027-03-29-dor-lombar-aguda-quanto-tempo",
+   "status": "pendente",
+   "tema": "Dor lombar aguda: quanto tempo leva para melhorar?",
+   "pilar": "Dor e coluna",
+   "angulo": "Referências sugeridas (confirmar no PubMed): Costa et al., BMJ 2012"
+  },
+  {
+   "id": "mobilidade-ou-flexibilidade-qual-a",
+   "data": "2027-03-31",
+   "hora": "12:00",
+   "pasta": "carrosseis/2027-03-31-mobilidade-ou-flexibilidade-qual-a",
+   "status": "pendente",
+   "tema": "Mobilidade ou flexibilidade: qual a diferença?",
+   "pilar": "Biomecânica",
+   "angulo": "Referências sugeridas (confirmar no PubMed): Buscar no PubMed definições e evidência de treino de mobilidade/flexibilidade"
+  },
+  {
+   "id": "terapia-manual-ajuda-mas-nao",
+   "data": "2027-04-02",
+   "hora": "12:00",
+   "pasta": "carrosseis/2027-04-02-terapia-manual-ajuda-mas-nao",
+   "status": "pendente",
+   "tema": "Terapia manual: ajuda, mas não funciona sozinha",
+   "pilar": "Mitos de tratamento",
+   "angulo": "Referências sugeridas (confirmar no PubMed): Buscar revisões sobre terapia manual combinada a exercício"
+  }
+ ]
 }
