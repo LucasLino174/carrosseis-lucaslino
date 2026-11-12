@@ -30,6 +30,11 @@ HANDLE = "@lucaslino.fisio"
 NOME = "Lucas Lino"
 AVATAR = "data:image/jpeg;base64," + base64.b64encode((ROOT / "assets/avatar.jpg").read_bytes()).decode()
 
+def _img(name):
+    return "data:image/png;base64," + base64.b64encode((ROOT / "assets" / name).read_bytes()).decode()
+LOGO_H = _img("logo_horizontal.png"); LOGO_H_W = _img("logo_horizontal_branco.png")
+LOGO_S = _img("logo_simbolo.png"); LOGO_S_W = _img("logo_simbolo_branco.png")
+
 FONT_DIRS = [Path("/usr/share/fonts/truetype/google-fonts"), ROOT / "assets/fonts"]
 def _font(weight, file):
     for d in FONT_DIRS:
@@ -42,18 +47,26 @@ FONTS = "".join(_font(w, f) for w, f in [(300, "Poppins-Light.ttf"), (400, "Popp
                                            (500, "Poppins-Medium.ttf"), (700, "Poppins-Bold.ttf")])
 
 def pal(light):
+    if light == "teal":
+        return dict(bg=f"background:linear-gradient(160deg, #23685F 0%, {BD} 55%, #3E9A8E 100%);", title="#fff",
+                    text="rgba(255,255,255,0.82)", strong="#fff", accent="#0E2422", accent2="#fff", line="rgba(255,255,255,0.18)",
+                    muted="rgba(255,255,255,0.6)", handle="rgba(255,255,255,0.9)",
+                    pill="background:rgba(255,255,255,0.18);color:#fff;", track="rgba(255,255,255,0.2)",
+                    count="rgba(255,255,255,0.6)", arrow_bg="rgba(255,255,255,0.08)", arrow="rgba(255,255,255,0.5)",
+                    box_bg="rgba(255,255,255,0.12)", box_border="rgba(255,255,255,0.2)", icon_bg="rgba(255,255,255,0.15)",
+                    fill="#fff", mode="teal")
     if light:
         return dict(bg=f"background:{LIGHT_BG};", title=INK, text=GRAY, strong=INK, accent=BD, accent2=B,
                     line=LIGHT_BORDER, muted="rgba(17,23,24,0.45)", handle="rgba(17,23,24,0.75)",
                     pill=f"background:rgba(43,126,115,0.12);color:{BD};", track="rgba(0,0,0,0.08)",
                     count="rgba(0,0,0,0.35)", arrow_bg="rgba(0,0,0,0.05)", arrow="rgba(0,0,0,0.28)",
-                    box_bg="#fff", box_border=LIGHT_BORDER, icon_bg="rgba(43,126,115,0.10)")
+                    box_bg="#fff", box_border=LIGHT_BORDER, icon_bg="rgba(43,126,115,0.10)", fill=B, mode="light")
     return dict(bg=f"background:radial-gradient(120% 90% at 100% 0%, #1E2829 0%, {DARK_BG} 55%);", title="#fff",
                 text="rgba(255,255,255,0.6)", strong="#fff", accent=B, accent2=B, line="rgba(255,255,255,0.08)",
                 muted="rgba(255,255,255,0.45)", handle="rgba(255,255,255,0.8)",
                 pill=f"background:rgba(108,195,183,0.14);color:{BL};", track="rgba(255,255,255,0.12)",
                 count="rgba(255,255,255,0.4)", arrow_bg="rgba(255,255,255,0.06)", arrow="rgba(255,255,255,0.35)",
-                box_bg="rgba(0,0,0,0.25)", box_border="rgba(255,255,255,0.08)", icon_bg="rgba(108,195,183,0.12)")
+                box_bg="rgba(0,0,0,0.25)", box_border="rgba(255,255,255,0.08)", icon_bg="rgba(108,195,183,0.12)", fill=B, mode="dark")
 
 def md(text, c):
     """**x** vira destaque colorido."""
@@ -99,7 +112,7 @@ def swipe_arrow(c):
 
 def top_bar(c, tag, solid=False, show_handle=True):
     pill = f"background:{INK};color:#fff;" if solid else c["pill"]
-    handle = (f'<span style="display:flex;align-items:center;gap:8px;"><img src="{AVATAR}" style="width:26px;height:26px;border-radius:50%;object-fit:cover;border:1.5px solid {B};"/>'
+    handle = (f'<span style="display:flex;align-items:center;gap:8px;"><img src="{AVATAR}" style="width:26px;height:26px;border-radius:50%;object-fit:cover;border:1.5px solid {"#fff" if c["mode"]=="teal" else B};"/>'
               f'<span style="font-size:11px;font-weight:600;color:{c["handle"]};letter-spacing:.2px;">{HANDLE}</span></span>') if show_handle else "<span></span>"
     tag_html = f'<span style="font-size:8.5px;font-weight:700;letter-spacing:1.4px;padding:4px 9px;border-radius:20px;{pill}">{tag}</span>' if tag else ""
     return f'<div style="position:absolute;top:20px;left:28px;right:28px;z-index:11;display:flex;align-items:center;justify-content:space-between;">{handle}{tag_html}</div>'
@@ -131,20 +144,33 @@ def para(text, c, mt=12):
 
 # ---------------- Tipos de slide ----------------
 def s_capa(s, c):
+    """Capa. Layouts: 'base' (manchete embaixo) ou 'topo' (manchete em cima, arte embaixo).
+    Fundo segue o estilo: claro (padrão) ou escuro."""
     mod = importlib.import_module("ilustracoes." + s["ilustracao"])
-    art = mod.cover_svg(B, BD, LIGHT_BG)
+    dark = c["mode"] != "light"
+    bgc = DARK_BG if dark else LIGHT_BG
+    art = mod.cover_svg(B, BD, bgc)
+    layout = s.get("layout", "base")
     titulo = re.sub(r"==(.+?)==", lambda m: f'<span style="background:{B};color:{INK};padding:0 6px;border-radius:4px;-webkit-box-decoration-break:clone;box-decoration-break:clone;">{m.group(1)}</span>', s["titulo"])
-    fade_to = LIGHT_BG
+    tcol = "#fff" if dark else INK
+    sub_c = "rgba(255,255,255,0.65)" if dark else GRAY
+    rgb = "17,23,24" if dark else "242,246,245"
+    titulo_html = (f'<h1 style="font-size:{s.get("tamanho", 28)}px;line-height:1.1;font-weight:700;letter-spacing:-0.6px;color:{tcol};text-transform:uppercase;">{titulo}</h1>'
+                   f'<div style="width:34px;height:2px;background:{B if dark else BD};margin:12px 0 10px;border-radius:2px;"></div>'
+                   f'<p style="font-size:12.5px;line-height:1.45;color:{sub_c};">{md_strong(s.get("subtitulo", ""), c)}</p>')
+    marca = f'<img src="{LOGO_S_W if dark else LOGO_S}" style="position:absolute;right:30px;bottom:56px;width:30px;opacity:.55;z-index:6"/>' if s.get("marca", True) else ""
+    if layout == "topo":
+        return (f'<div style="position:absolute;inset:0;transform:translateY({s.get("deslocamento_arte", 120)}px)">{art}</div>' + top_bar(c, s.get("tag", "")) +
+                f'<div style="position:absolute;left:0;right:0;top:0;height:270px;background:linear-gradient(to bottom,{bgc} 58%,rgba({rgb},0));"></div>'
+                f'<div style="position:absolute;left:0;right:0;bottom:0;height:70px;background:linear-gradient(to top,{bgc},rgba({rgb},0));"></div>'
+                f'<div style="position:absolute;left:36px;right:48px;top:66px;">{titulo_html}</div>' + marca)
     return (art + top_bar(c, s.get("tag", "")) +
-            f'<div style="position:absolute;left:0;right:0;bottom:0;height:250px;background:linear-gradient(to top,{fade_to} 62%,rgba(242,246,245,0));"></div>'
-            f'<div style="position:absolute;left:36px;right:48px;bottom:54px;">'
-            f'<h1 style="font-size:{s.get("tamanho", 28)}px;line-height:1.1;font-weight:700;letter-spacing:-0.6px;color:{INK};text-transform:uppercase;">{titulo}</h1>'
-            f'<div style="width:34px;height:2px;background:{BD};margin:12px 0 10px;border-radius:2px;"></div>'
-            f'<p style="font-size:12.5px;line-height:1.45;color:{GRAY};">{md_strong(s.get("subtitulo", ""), c)}</p></div>')
+            f'<div style="position:absolute;left:0;right:0;bottom:0;height:250px;background:linear-gradient(to top,{bgc} 62%,rgba({rgb},0));"></div>'
+            f'<div style="position:absolute;left:36px;right:48px;bottom:54px;">{titulo_html}</div>' + marca)
 
 def s_mito(s, c):
-    pills = "".join(f'<span style="font-size:11.5px;padding:6px 13px;border:1px solid {c["line"] if False else ("rgba(0,0,0,0.12)" if c["title"]==INK else "rgba(255,255,255,0.12)")};border-radius:20px;color:{c["muted"]};text-decoration:line-through;">{p}</span>' for p in s.get("riscados", []))
-    box = (f'<div style="display:flex;align-items:center;gap:14px;padding:14px 16px;border:1.5px solid {B};border-radius:14px;background:{c["box_bg"] if c["title"]==INK else "transparent"};">'
+    pills = "".join(f'<span style="font-size:11.5px;padding:6px 13px;border:1px solid {"rgba(0,0,0,0.12)" if c["mode"]=="light" else "rgba(255,255,255,0.18)"};border-radius:20px;color:{c["muted"]};text-decoration:line-through;">{p}</span>' for p in s.get("riscados", []))
+    box = (f'<div style="display:flex;align-items:center;gap:14px;padding:14px 16px;border:1.5px solid {c["accent2"] if c["mode"]=="teal" else B};border-radius:14px;background:{c["box_bg"] if c["mode"]!="dark" else "transparent"};">'
            f'<div style="width:34px;height:34px;border-radius:50%;background:{c["icon_bg"]};display:flex;align-items:center;justify-content:center;flex-shrink:0">{icon(s.get("icone","lampada"), c["accent"])}</div>'
            f'<p style="font-size:13.5px;line-height:1.4;color:{c["strong"]};">{md(s.get("caixa",""), c)}</p></div>') if s.get("caixa") else ""
     return top_bar(c, s.get("tag", "")) + body_wrap(
@@ -154,7 +180,7 @@ def s_mito(s, c):
 
 def s_evidencia(s, c):
     big = (f'<div style="display:flex;align-items:flex-end;gap:12px;margin-bottom:10px;">'
-           f'<span style="font-size:76px;line-height:.85;font-weight:700;letter-spacing:-3px;color:{B};">{s["numero"]}</span>'
+           f'<span style="font-size:76px;line-height:.85;font-weight:700;letter-spacing:-3px;color:{"#fff" if c["mode"]=="teal" else B};">{s["numero"]}</span>'
            f'<span style="font-size:12px;line-height:1.3;color:{c["text"]};padding-bottom:4px;">{s.get("legenda_numero","")}</span></div>') if s.get("numero") else ""
     return top_bar(c, s.get("tag", "")) + body_wrap(
         label(s.get("rotulo"), c) + big + h2(s["titulo"], c, 26) + para(s.get("texto"), c) + source(s.get("fonte"), c))
@@ -168,14 +194,14 @@ def s_destaque(s, c):
 
 def s_lista(s, c):
     rows = "".join(f'<div style="display:flex;align-items:flex-start;gap:14px;padding:11px 0;border-bottom:1px solid {c["line"]};">'
-                   f'<div style="width:32px;height:32px;border-radius:50%;border:1.5px solid {B};display:flex;align-items:center;justify-content:center;flex-shrink:0">{icon(it.get("icone","check"), c["accent"])}</div>'
+                   f'<div style="width:32px;height:32px;border-radius:50%;border:1.5px solid {"#fff" if c["mode"]=="teal" else B};display:flex;align-items:center;justify-content:center;flex-shrink:0">{icon(it.get("icone","check"), c["accent"])}</div>'
                    f'<div><div style="font-size:14px;font-weight:700;color:{c["strong"]};line-height:1.25">{it["titulo"]}</div>'
                    f'<div style="font-size:12px;color:{c["text"]};line-height:1.4;margin-top:2px">{it.get("texto","")}</div></div></div>' for it in s["itens"])
     return top_bar(c, s.get("tag", "")) + body_wrap(label(s.get("rotulo"), c) + h2(s["titulo"], c, 26, 8) + rows)
 
 def s_passos(s, c):
     rows = "".join(f'<div style="display:flex;align-items:flex-start;gap:14px;padding:10px 0;border-bottom:1px solid {c["line"]};">'
-                   f'<span style="font-size:24px;font-weight:300;color:{B};min-width:32px;line-height:1;">{k+1:02d}</span>'
+                   f'<span style="font-size:24px;font-weight:300;color:{"#fff" if c["mode"]=="teal" else B};min-width:32px;line-height:1;">{k+1:02d}</span>'
                    f'<div><div style="font-size:14px;font-weight:700;color:{c["strong"]};line-height:1.25">{it["titulo"]}</div>'
                    f'<div style="font-size:12px;color:{c["text"]};line-height:1.4;margin-top:2px">{it.get("texto","")}</div></div></div>' for k, it in enumerate(s["itens"]))
     return top_bar(c, s.get("tag", "")) + body_wrap(label(s.get("rotulo"), c) + h2(s["titulo"], c, 28, 8) + rows)
@@ -183,7 +209,7 @@ def s_passos(s, c):
 def s_cta(s, c):
     titulo = re.sub(r"\*\*(.+?)\*\*", lambda m: f'<span style="color:{DARK_BG}">{m.group(1)}</span>', s["titulo"])
     return (top_bar(c, s.get("tag", "AGORA"), solid=True, show_handle=False) +
-            '<div style="position:absolute;right:-60px;top:70px;opacity:.07;"><svg width="300" height="300" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1"><circle cx="12" cy="12" r="11"/><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="3"/></svg></div>'
+            f'<img src="{LOGO_S_W}" style="position:absolute;right:-70px;top:60px;width:300px;opacity:.08;"/>'
             '<div style="position:absolute;inset:0;padding:0 40px 60px 36px;display:flex;flex-direction:column;justify-content:center;">'
             f'<div style="display:flex;align-items:center;gap:12px;margin-bottom:26px;"><img src="{AVATAR}" style="width:44px;height:44px;border-radius:50%;object-fit:cover;border:2px solid #fff;"/>'
             f'<div><div style="font-size:13px;font-weight:700;letter-spacing:.5px;color:#fff">{NOME}</div><div style="font-size:11px;color:rgba(255,255,255,0.75)">{HANDLE}</div></div></div>'
@@ -191,7 +217,31 @@ def s_cta(s, c):
             f'<p style="font-size:13.5px;line-height:1.5;color:rgba(255,255,255,0.8);margin:14px 0 22px;">{s.get("texto","")}</p>'
             f'<div><span style="display:inline-flex;align-items:center;gap:8px;padding:12px 24px;background:{LIGHT_BG};color:{BD};font-weight:700;font-size:13px;letter-spacing:1px;border-radius:28px;">'
             f'<svg width="14" height="14" viewBox="0 0 24 24" fill="{BD}"><path d="M6 3h12v18l-6-4-6 4z"/></svg>{s.get("botao","SALVAR ESTE POST")}</span></div>'
-            f'<p style="font-size:9.5px;line-height:1.5;color:rgba(255,255,255,0.55);margin-top:26px;">{("Referências: " + s["referencias"]) if s.get("referencias") else ""}</p></div>')
+            f'<p style="font-size:9.5px;line-height:1.5;color:rgba(255,255,255,0.55);margin-top:26px;">{("Referências: " + s["referencias"]) if s.get("referencias") else ""}</p>'
+            f'<img src="{LOGO_H_W}" style="width:120px;opacity:.9;margin-top:16px;"/></div>')
+
+# ---------------- Estilos (variar a cada post; a paleta é sempre a mesma) ----------------
+ESTILOS = {
+    "alternado": ["claro", "escuro"],            # claro/escuro intercalados (estilo do 1º post)
+    "escuro":    ["escuro"],                     # tudo escuro, capa escura, números-fantasma
+    "claro":     ["claro"],                      # tudo claro, barra lateral verde-água, números-fantasma
+    "blocos":    ["claro", "verde", "escuro"],   # rodízio claro / bloco verde-água / escuro
+    "verde":     ["escuro", "verde"],            # capa escura, intercala escuro e verde-água
+}
+def modo_do_estilo(estilo, i):
+    seq = ESTILOS.get(estilo, ESTILOS["alternado"])
+    return seq[i % len(seq)]
+
+def decor(estilo, i, c):
+    out = ""
+    if estilo in ("escuro", "claro", "verde") and i > 0:
+        col = "rgba(255,255,255,0.05)" if c["mode"] != "light" else "rgba(43,126,115,0.07)"
+        out += f'<div style="position:absolute;right:40px;top:44px;font-size:120px;font-weight:700;line-height:1;color:{col};letter-spacing:-4px;">{i+1:02d}</div>'
+    if estilo == "claro" and i > 0:
+        out += f'<div style="position:absolute;left:0;top:0;bottom:0;width:5px;background:linear-gradient({B},{BD});"></div>'
+    if estilo == "blocos" and c["mode"] == "teal":
+        out += f'<img src="{LOGO_S_W}" style="position:absolute;left:-50px;top:40px;width:240px;opacity:.06;"/>'
+    return out
 
 TIPOS = dict(capa=s_capa, mito=s_mito, evidencia=s_evidencia, destaque=s_destaque, lista=s_lista, passos=s_passos, cta=s_cta)
 
@@ -206,10 +256,11 @@ def build_html(spec):
             c = pal(False)
             inner = s_cta(s, c) + progress_bar(i, total, c, "#fff")
         else:
-            light = s.get("claro", i % 2 == 0)   # alterna claro/escuro; capa é clara
-            c = pal(light)
+            modo = s.get("fundo") or modo_do_estilo(spec.get("estilo", "alternado"), i)
+            c = pal({"claro": True, "escuro": False, "verde": "teal"}[modo])
             bg = c["bg"]
-            inner = TIPOS[s["tipo"]](s, c) + progress_bar(i, total, c) + ("" if last else swipe_arrow(c))
+            inner = (decor(spec.get("estilo", "alternado"), i, c) + TIPOS[s["tipo"]](s, c) +
+                     progress_bar(i, total, c, c["fill"] if c["mode"] == "teal" else None) + ("" if last else swipe_arrow(c)))
         out.append(f'<div class="slide" style="{bg}">{inner}</div>')
     css = FONTS + """*{margin:0;padding:0;box-sizing:border-box}
 body{background:#E9EEED;font-family:'Poppins',sans-serif;display:flex;justify-content:center;padding:24px 0;-webkit-font-smoothing:antialiased}

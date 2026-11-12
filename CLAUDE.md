@@ -23,6 +23,13 @@ Status: `pendente` → `rascunho` (gerado, aguardando aprovação) → `aprovado
 8. Atualize o status para `rascunho`, faça commit e push (as imagens precisam estar no GitHub para ter link público).
 9. Envie ao Lucas as imagens (SendUserFile) e a legenda (SendUserMessage) e peça aprovação. Ajuste o que ele pedir e reenvie. Ao aprovar: status `aprovado`, commit, push.
 
+## Design: nunca repetir o estilo (pedido do Lucas)
+O Lucas não quer feed monótono: **cada carrossel precisa ter um design diferente do anterior**, sempre com a mesma paleta e a logo.
+- Na spec, escolha `"estilo"`: `alternado`, `escuro`, `claro`, `blocos` ou `verde` (ver `ESTILOS` em `pipeline/build.py`), e na capa `"layout"`: `base` (manchete embaixo) ou `topo` (manchete em cima, arte embaixo). Um slide pode forçar o fundo com `"fundo": "claro" | "escuro" | "verde"`.
+- Consulte em `fila.json` o `estilo` e o `layout` dos últimos posts e **não repita a combinação dos 2 anteriores**. Grave `"estilo"` e `"layout"` no item da fila ao gerar.
+- Varie também a estrutura conforme o tema (ordem e tipos de slide, número de slides de 6 a 9, mais lista ou mais passos) e a ilustração da capa. Pode criar estilos novos em `build.py` (sempre dentro da paleta) quando o tema pedir.
+- Logo: `pipeline/assets/logo_*.png` (colorida e `_branco`). Já entra na capa (símbolo discreto) e no CTA.
+
 ## Identidade visual (não mudar sem o Lucas pedir)
 Verde-água `#6CC3B7` (claro `#A6DDD5`, escuro `#2B7E73`), fundo claro `#F2F6F5`, fundo escuro `#111718`, brancos e cinzas, fonte Poppins. Topo de cada slide: foto redonda + @lucaslino.fisio + etiqueta. Barra de progresso embaixo, seta à direita (exceto no último), CTA em degradê verde-água. Tudo isso já está em `pipeline/build.py`.
 

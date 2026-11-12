@@ -20,7 +20,9 @@
    "pasta": "carrosseis/2026-11-postura",
    "tema": "A sua postura não é culpada pela sua dor nas costas",
    "status": "publicado",
-   "media_id": "18120786467281517"
+   "media_id": "18120786467281517",
+   "estilo": "alternado",
+   "layout": "base"
   },
   {
    "id": "corrida-joelho",
@@ -636,5 +638,12 @@
    "pilar": "Mitos de tratamento",
    "angulo": "Referências sugeridas (confirmar no PubMed): Buscar revisões sobre terapia manual combinada a exercício"
   }
+ ],
+ "estilos_disponiveis": [
+  "alternado",
+  "escuro",
+  "claro",
+  "blocos",
+  "verde"
  ]
 }
