@@ -26,6 +26,12 @@ LIGHT_BORDER = "#DFE8E6"
 DARK_BG = "#111718"
 GRAY = "#6B7775"
 INK = "#111718"
+# Cores complementares (combinam com o verde-água; usar com moderação, quando o tema pedir)
+CORAL = "#E07A5F"      # terracota: "mito", "erro", alerta
+AREIA = "#EFE6D8"      # fundo claro quente
+AREIA_BORDA = "#E2D6C2"
+MARINHO = "#14243B"    # fundo escuro frio
+OCRE = "#E9B44C"       # destaque quente pontual
 HANDLE = "@lucaslino.fisio"
 NOME = "Lucas Lino"
 AVATAR = "data:image/jpeg;base64," + base64.b64encode((ROOT / "assets/avatar.jpg").read_bytes()).decode()
@@ -47,6 +53,14 @@ FONTS = "".join(_font(w, f) for w, f in [(300, "Poppins-Light.ttf"), (400, "Popp
                                            (500, "Poppins-Medium.ttf"), (700, "Poppins-Bold.ttf")])
 
 def pal(light):
+    if light == "areia":
+        c = pal(True); c.update(bg=f"background:{AREIA};", line=AREIA_BORDA, box_bg="#FBF7F1", box_border=AREIA_BORDA,
+                                pill=f"background:rgba(224,122,95,0.14);color:#A4452D;", mode="light", base=AREIA)
+        return c
+    if light == "marinho":
+        c = pal(False); c.update(bg=f"background:radial-gradient(120% 90% at 0% 100%, #1F3A5C 0%, {MARINHO} 60%);",
+                                 box_bg="rgba(255,255,255,0.06)", pill=f"background:rgba(233,180,76,0.16);color:{OCRE};", mode="dark", base=MARINHO)
+        return c
     if light == "teal":
         return dict(bg=f"background:linear-gradient(160deg, #23685F 0%, {BD} 55%, #3E9A8E 100%);", title="#fff",
                     text="rgba(255,255,255,0.82)", strong="#fff", accent="#0E2422", accent2="#fff", line="rgba(255,255,255,0.18)",
@@ -54,19 +68,19 @@ def pal(light):
                     pill="background:rgba(255,255,255,0.18);color:#fff;", track="rgba(255,255,255,0.2)",
                     count="rgba(255,255,255,0.6)", arrow_bg="rgba(255,255,255,0.08)", arrow="rgba(255,255,255,0.5)",
                     box_bg="rgba(255,255,255,0.12)", box_border="rgba(255,255,255,0.2)", icon_bg="rgba(255,255,255,0.15)",
-                    fill="#fff", mode="teal")
+                    fill="#fff", mode="teal", base=BD)
     if light:
         return dict(bg=f"background:{LIGHT_BG};", title=INK, text=GRAY, strong=INK, accent=BD, accent2=B,
                     line=LIGHT_BORDER, muted="rgba(17,23,24,0.45)", handle="rgba(17,23,24,0.75)",
                     pill=f"background:rgba(43,126,115,0.12);color:{BD};", track="rgba(0,0,0,0.08)",
                     count="rgba(0,0,0,0.35)", arrow_bg="rgba(0,0,0,0.05)", arrow="rgba(0,0,0,0.28)",
-                    box_bg="#fff", box_border=LIGHT_BORDER, icon_bg="rgba(43,126,115,0.10)", fill=B, mode="light")
+                    box_bg="#fff", box_border=LIGHT_BORDER, icon_bg="rgba(43,126,115,0.10)", fill=B, mode="light", base=LIGHT_BG)
     return dict(bg=f"background:radial-gradient(120% 90% at 100% 0%, #1E2829 0%, {DARK_BG} 55%);", title="#fff",
                 text="rgba(255,255,255,0.6)", strong="#fff", accent=B, accent2=B, line="rgba(255,255,255,0.08)",
                 muted="rgba(255,255,255,0.45)", handle="rgba(255,255,255,0.8)",
                 pill=f"background:rgba(108,195,183,0.14);color:{BL};", track="rgba(255,255,255,0.12)",
                 count="rgba(255,255,255,0.4)", arrow_bg="rgba(255,255,255,0.06)", arrow="rgba(255,255,255,0.35)",
-                box_bg="rgba(0,0,0,0.25)", box_border="rgba(255,255,255,0.08)", icon_bg="rgba(108,195,183,0.12)", fill=B, mode="dark")
+                box_bg="rgba(0,0,0,0.25)", box_border="rgba(255,255,255,0.08)", icon_bg="rgba(108,195,183,0.12)", fill=B, mode="dark", base=DARK_BG)
 
 def md(text, c):
     """**x** vira destaque colorido."""
@@ -133,8 +147,13 @@ def signature(c):
     return (f'<div style="display:flex;align-items:center;gap:12px;margin-top:18px;"><div style="flex:1;height:1px;background:{c["line"]}"></div>'
             f'<span style="font-size:9px;font-weight:700;letter-spacing:3px;color:{c["muted"]}">LUCAS LINO</span><div style="flex:1;height:1px;background:{c["line"]}"></div></div>')
 
+DISPOSICAO = {"base": "flex-end", "topo": "flex-start", "centro": "center"}
+_ALINHAR = {"v": "base", "centro_texto": False}
 def body_wrap(inner):
-    return f'<div style="position:absolute;inset:0;padding:0 48px 60px 36px;display:flex;flex-direction:column;justify-content:flex-end;">{inner}</div>'
+    v = DISPOSICAO.get(_ALINHAR["v"], "flex-end")
+    top_pad = "72px" if v == "flex-start" else "0"
+    ta = "text-align:center;align-items:center;" if _ALINHAR["centro_texto"] else ""
+    return f'<div style="position:absolute;inset:0;padding:{top_pad} 48px 60px 36px;display:flex;flex-direction:column;justify-content:{v};{ta}">{inner}</div>'
 
 def h2(text, c, size=27, mb=0):
     return f'<h2 style="font-size:{size}px;line-height:1.12;font-weight:700;letter-spacing:-0.5px;color:{c["title"]};margin-bottom:{mb}px;">{md(text, c)}</h2>'
@@ -148,13 +167,13 @@ def s_capa(s, c):
     Fundo segue o estilo: claro (padrão) ou escuro."""
     mod = importlib.import_module("ilustracoes." + s["ilustracao"])
     dark = c["mode"] != "light"
-    bgc = DARK_BG if dark else LIGHT_BG
+    bgc = c.get("base", DARK_BG if dark else LIGHT_BG)
     art = mod.cover_svg(B, BD, bgc)
     layout = s.get("layout", "base")
     titulo = re.sub(r"==(.+?)==", lambda m: f'<span style="background:{B};color:{INK};padding:0 6px;border-radius:4px;-webkit-box-decoration-break:clone;box-decoration-break:clone;">{m.group(1)}</span>', s["titulo"])
     tcol = "#fff" if dark else INK
     sub_c = "rgba(255,255,255,0.65)" if dark else GRAY
-    rgb = "17,23,24" if dark else "242,246,245"
+    rgb = ",".join(str(int(bgc[k:k+2], 16)) for k in (1, 3, 5))
     titulo_html = (f'<h1 style="font-size:{s.get("tamanho", 28)}px;line-height:1.1;font-weight:700;letter-spacing:-0.6px;color:{tcol};text-transform:uppercase;">{titulo}</h1>'
                    f'<div style="width:34px;height:2px;background:{B if dark else BD};margin:12px 0 10px;border-radius:2px;"></div>'
                    f'<p style="font-size:12.5px;line-height:1.45;color:{sub_c};">{md_strong(s.get("subtitulo", ""), c)}</p>')
@@ -220,6 +239,81 @@ def s_cta(s, c):
             f'<p style="font-size:9.5px;line-height:1.5;color:rgba(255,255,255,0.55);margin-top:26px;">{("Referências: " + s["referencias"]) if s.get("referencias") else ""}</p>'
             f'<img src="{LOGO_H_W}" style="width:120px;opacity:.9;margin-top:16px;"/></div>')
 
+
+# ---------------- Tipos de slide extras (disposições de texto diferentes) ----------------
+def _xicon(color):
+    return f'<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="{color}" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>'
+def _vicon(color):
+    return f'<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="{color}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg>'
+
+def s_comparacao(s, c):
+    """Duas colunas lado a lado: mito (terracota) x ciência (verde-água)."""
+    def col(lado, cor, ic, fundo):
+        itens = "".join(f'<div style="display:flex;gap:8px;align-items:flex-start;padding:8px 0;border-top:1px solid {c["line"]};">'
+                        f'<span style="margin-top:3px;flex-shrink:0">{ic(cor)}</span><span style="font-size:12px;line-height:1.35;color:{c["strong"]}">{md(t, c)}</span></div>'
+                        for t in lado["itens"])
+        return (f'<div style="flex:1;padding:14px 12px;border-radius:14px;background:{fundo};">'
+                f'<div style="font-size:9.5px;font-weight:700;letter-spacing:2px;color:{cor};margin-bottom:8px;">{lado["rotulo"]}</div>{itens}</div>')
+        
+    esq = col(s["esquerda"], CORAL, _xicon, "rgba(224,122,95,0.10)")
+    dir_ = col(s["direita"], BD if c["mode"] == "light" else B, _vicon, "rgba(108,195,183,0.14)")
+    return top_bar(c, s.get("tag", "")) + body_wrap(
+        label(s.get("rotulo"), c) + h2(s["titulo"], c, 25, 16) +
+        f'<div style="display:flex;gap:10px;text-align:left;">{esq}{dir_}</div>' + source(s.get("fonte"), c))
+
+def s_grade(s, c):
+    """Cartões 2x2 com ícone."""
+    cards = "".join(f'<div style="padding:14px 12px;border-radius:14px;background:{c["box_bg"]};border:1px solid {c["box_border"]};text-align:left;">'
+                    f'<div style="width:30px;height:30px;border-radius:9px;background:{c["icon_bg"]};display:flex;align-items:center;justify-content:center;margin-bottom:10px;">{icon(it.get("icone","check"), c["accent"] if c["mode"]!="teal" else "#fff", 16)}</div>'
+                    f'<div style="font-size:13px;font-weight:700;color:{c["strong"]};line-height:1.25">{it["titulo"]}</div>'
+                    f'<div style="font-size:11px;color:{c["text"]};line-height:1.4;margin-top:4px">{it.get("texto","")}</div></div>' for it in s["itens"])
+    return top_bar(c, s.get("tag", "")) + body_wrap(
+        label(s.get("rotulo"), c) + h2(s["titulo"], c, 25, 14) +
+        f'<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">{cards}</div>')
+
+def s_linha_do_tempo(s, c):
+    """Linha do tempo vertical (fases, semanas, progressão)."""
+    lc = B if c["mode"] != "teal" else "#fff"
+    rows = "".join(f'<div style="display:flex;gap:14px;position:relative;padding-bottom:14px;">'
+                   f'<div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0;width:14px;">'
+                   f'<div style="width:12px;height:12px;border-radius:50%;background:{lc};box-shadow:0 0 0 4px rgba(108,195,183,0.2);margin-top:3px"></div>'
+                   + (f'<div style="flex:1;width:2px;background:{c["line"]};margin-top:4px"></div>' if k < len(s["itens"]) - 1 else "") +
+                   f'</div><div style="text-align:left"><div style="font-size:9.5px;font-weight:700;letter-spacing:2px;color:{c["accent"]}">{it.get("marco","")}</div>'
+                   f'<div style="font-size:14px;font-weight:700;color:{c["strong"]};line-height:1.25;margin-top:2px">{it["titulo"]}</div>'
+                   f'<div style="font-size:11.5px;color:{c["text"]};line-height:1.4;margin-top:2px">{it.get("texto","")}</div></div></div>'
+                   for k, it in enumerate(s["itens"]))
+    return top_bar(c, s.get("tag", "")) + body_wrap(label(s.get("rotulo"), c) + h2(s["titulo"], c, 25, 16) + rows)
+
+def s_citacao(s, c):
+    """Frase de impacto grande entre aspas, com a fonte embaixo."""
+    q = B if c["mode"] != "teal" else "#fff"
+    return top_bar(c, s.get("tag", "")) + body_wrap(
+        f'<div style="font-size:90px;line-height:.6;font-weight:700;color:{q};opacity:.9;height:44px">&ldquo;</div>'
+        f'<p style="font-size:24px;line-height:1.25;font-weight:500;letter-spacing:-0.3px;color:{c["title"]};">{md(s["frase"], c)}</p>'
+        f'<div style="display:flex;align-items:center;gap:10px;margin-top:18px;"><div style="width:26px;height:2px;background:{q}"></div>'
+        f'<span style="font-size:11px;color:{c["muted"]}">{s.get("fonte","")}</span></div>')
+
+def s_manchete(s, c):
+    """Só tipografia: uma afirmação enorme. Bom para virada de narrativa."""
+    return top_bar(c, s.get("tag", "")) + body_wrap(
+        label(s.get("rotulo"), c) +
+        f'<h2 style="font-size:{s.get("tamanho", 40)}px;line-height:1.02;font-weight:700;letter-spacing:-1.2px;color:{c["title"]};text-transform:{"uppercase" if s.get("caixa_alta") else "none"};">{md(s["titulo"], c)}</h2>'
+        + para(s.get("texto"), c, 16))
+
+def s_dado(s, c):
+    """Número gigante centralizado dentro de um anel, com a frase e a fonte."""
+    rc = B if c["mode"] != "teal" else "#fff"
+    pct = max(0, min(100, float(s.get("anel", 0))))
+    circ = 2 * 3.14159 * 70
+    ring = (f'<svg width="170" height="170" viewBox="0 0 170 170" style="position:absolute;inset:0"><circle cx="85" cy="85" r="70" fill="none" stroke="{c["line"]}" stroke-width="8"/>'
+            f'<circle cx="85" cy="85" r="70" fill="none" stroke="{rc}" stroke-width="8" stroke-linecap="round" stroke-dasharray="{circ*pct/100:.1f} {circ:.1f}" transform="rotate(-90 85 85)"/></svg>') if pct else ""
+    return top_bar(c, s.get("tag", "")) + body_wrap(
+        label(s.get("rotulo"), c) +
+        f'<div style="position:relative;width:170px;height:170px;display:flex;align-items:center;justify-content:center;margin:4px auto 14px;">{ring}'
+        f'<div style="text-align:center"><div style="font-size:52px;font-weight:700;letter-spacing:-2px;line-height:1;color:{c["title"]}">{s["numero"]}</div>'
+        f'<div style="font-size:11px;color:{c["text"]};margin-top:4px">{s.get("unidade","")}</div></div></div>'
+        + h2(s["titulo"], c, 22) + para(s.get("texto"), c) + source(s.get("fonte"), c))
+
 # ---------------- Estilos (variar a cada post; a paleta é sempre a mesma) ----------------
 ESTILOS = {
     "alternado": ["claro", "escuro"],            # claro/escuro intercalados (estilo do 1º post)
@@ -227,6 +321,8 @@ ESTILOS = {
     "claro":     ["claro"],                      # tudo claro, barra lateral verde-água, números-fantasma
     "blocos":    ["claro", "verde", "escuro"],   # rodízio claro / bloco verde-água / escuro
     "verde":     ["escuro", "verde"],            # capa escura, intercala escuro e verde-água
+    "areia":     ["areia", "marinho"],           # quente e frio: areia + azul-marinho, verde-água como acento
+    "editorial": ["claro", "areia", "escuro"],   # revista: claro, areia, escuro
 }
 def modo_do_estilo(estilo, i):
     seq = ESTILOS.get(estilo, ESTILOS["alternado"])
@@ -243,7 +339,8 @@ def decor(estilo, i, c):
         out += f'<img src="{LOGO_S_W}" style="position:absolute;left:-50px;top:40px;width:240px;opacity:.06;"/>'
     return out
 
-TIPOS = dict(capa=s_capa, mito=s_mito, evidencia=s_evidencia, destaque=s_destaque, lista=s_lista, passos=s_passos, cta=s_cta)
+TIPOS = dict(capa=s_capa, mito=s_mito, evidencia=s_evidencia, destaque=s_destaque, lista=s_lista, passos=s_passos, cta=s_cta,
+             comparacao=s_comparacao, grade=s_grade, linha_do_tempo=s_linha_do_tempo, citacao=s_citacao, manchete=s_manchete, dado=s_dado)
 
 def build_html(spec):
     slides = spec["slides"]
@@ -257,7 +354,9 @@ def build_html(spec):
             inner = s_cta(s, c) + progress_bar(i, total, c, "#fff")
         else:
             modo = s.get("fundo") or modo_do_estilo(spec.get("estilo", "alternado"), i)
-            c = pal({"claro": True, "escuro": False, "verde": "teal"}[modo])
+            _ALINHAR["v"] = s.get("disposicao", "base")
+            _ALINHAR["centro_texto"] = s.get("disposicao") == "centro"
+            c = pal({"claro": True, "escuro": False, "verde": "teal", "areia": "areia", "marinho": "marinho"}[modo])
             bg = c["bg"]
             inner = (decor(spec.get("estilo", "alternado"), i, c) + TIPOS[s["tipo"]](s, c) +
                      progress_bar(i, total, c, c["fill"] if c["mode"] == "teal" else None) + ("" if last else swipe_arrow(c)))

@@ -27,7 +27,11 @@ Status: `pendente` → `rascunho` (gerado, aguardando aprovação) → `aprovado
 O Lucas não quer feed monótono: **cada carrossel precisa ter um design diferente do anterior**, sempre com a mesma paleta e a logo.
 - Na spec, escolha `"estilo"`: `alternado`, `escuro`, `claro`, `blocos` ou `verde` (ver `ESTILOS` em `pipeline/build.py`), e na capa `"layout"`: `base` (manchete embaixo) ou `topo` (manchete em cima, arte embaixo). Um slide pode forçar o fundo com `"fundo": "claro" | "escuro" | "verde"`.
 - Consulte em `fila.json` o `estilo` e o `layout` dos últimos posts e **não repita a combinação dos 2 anteriores**. Grave `"estilo"` e `"layout"` no item da fila ao gerar.
-- Varie também a estrutura conforme o tema (ordem e tipos de slide, número de slides de 6 a 9, mais lista ou mais passos) e a ilustração da capa. Pode criar estilos novos em `build.py` (sempre dentro da paleta) quando o tema pedir.
+- Estilos com cores complementares: `areia` (areia #EFE6D8 + azul-marinho #14243B) e `editorial` (claro, areia, escuro). Cores de apoio em `build.py`: terracota `CORAL` (mito/erro/alerta), `OCRE` (destaque quente), `AREIA`, `MARINHO`. Fundos por slide: `claro`, `escuro`, `verde`, `areia`, `marinho`. Use outras cores que combinem com o verde-água quando o tema pedir, sempre com a logo e o verde-água presentes.
+- **Disposição do texto também precisa variar** (pedido do Lucas: não repetir sempre título + texto embaixo). Por slide, `"disposicao"`: `base`, `topo` ou `centro` (centralizado). Tipos de slide além dos básicos: `manchete` (só tipografia enorme), `comparacao` (mito x ciência em duas colunas), `grade` (cartões 2x2), `linha_do_tempo` (vertical), `citacao` (frase grande entre aspas), `dado` (número gigante no centro, com anel opcional `"anel": 0-100`). Veja o exemplo `pipeline/exemplos/demo_layouts.json`.
+- Em cada carrossel, misture disposições e tipos (ex.: não use dois slides seguidos com o mesmo tipo e disposição) e não copie a sequência do carrossel anterior. Crie tipos de slide e disposições novas em `build.py` quando fizer sentido.
+- Inspirações que o Lucas mandar ficam em `inspiracoes/` (imagens + `notas.md` com o que absorver de cada uma). Consulte antes de criar.
+- Varie também a estrutura conforme o tema (número de slides de 6 a 9) e a ilustração da capa.
 - Logo: `pipeline/assets/logo_*.png` (colorida e `_branco`). Já entra na capa (símbolo discreto) e no CTA.
 
 ## Identidade visual (não mudar sem o Lucas pedir)
