@@ -37,7 +37,14 @@ NOME = "Lucas Lino"
 AVATAR = "data:image/jpeg;base64," + base64.b64encode((ROOT / "assets/avatar.jpg").read_bytes()).decode()
 
 def _img(name):
-    return "data:image/png;base64," + base64.b64encode((ROOT / "assets" / name).read_bytes()).decode()
+    f = ROOT / "assets" / name
+    if not f.exists():  # logo ausente: o slide sai sem ela (avisar o Lucas)
+        print(f"AVISO: {f} não encontrado; gerando sem esta logo.")
+        return None
+    return "data:image/png;base64," + base64.b64encode(f.read_bytes()).decode()
+
+def logo_img(src, style):
+    return f'<img src="{src}" style="{style}"/>' if src else ""
 LOGO_H = _img("logo_horizontal.png"); LOGO_H_W = _img("logo_horizontal_branco.png")
 LOGO_S = _img("logo_simbolo.png"); LOGO_S_W = _img("logo_simbolo_branco.png")
 
@@ -177,7 +184,7 @@ def s_capa(s, c):
     titulo_html = (f'<h1 style="font-size:{s.get("tamanho", 28)}px;line-height:1.1;font-weight:700;letter-spacing:-0.6px;color:{tcol};text-transform:uppercase;">{titulo}</h1>'
                    f'<div style="width:34px;height:2px;background:{B if dark else BD};margin:12px 0 10px;border-radius:2px;"></div>'
                    f'<p style="font-size:12.5px;line-height:1.45;color:{sub_c};">{md_strong(s.get("subtitulo", ""), c)}</p>')
-    marca = f'<img src="{LOGO_S_W if dark else LOGO_S}" style="position:absolute;right:30px;bottom:56px;width:30px;opacity:.55;z-index:6"/>' if s.get("marca", True) else ""
+    marca = logo_img(LOGO_S_W if dark else LOGO_S, "position:absolute;right:30px;bottom:56px;width:30px;opacity:.55;z-index:6") if s.get("marca", True) else ""
     if layout == "topo":
         return (f'<div style="position:absolute;inset:0;transform:translateY({s.get("deslocamento_arte", 120)}px)">{art}</div>' + top_bar(c, s.get("tag", "")) +
                 f'<div style="position:absolute;left:0;right:0;top:0;height:270px;background:linear-gradient(to bottom,{bgc} 58%,rgba({rgb},0));"></div>'
@@ -228,7 +235,7 @@ def s_passos(s, c):
 def s_cta(s, c):
     titulo = re.sub(r"\*\*(.+?)\*\*", lambda m: f'<span style="color:{DARK_BG}">{m.group(1)}</span>', s["titulo"])
     return (top_bar(c, s.get("tag", "AGORA"), solid=True, show_handle=False) +
-            f'<img src="{LOGO_S_W}" style="position:absolute;right:-70px;top:60px;width:300px;opacity:.08;"/>'
+            logo_img(LOGO_S_W, "position:absolute;right:-70px;top:60px;width:300px;opacity:.08;") +
             '<div style="position:absolute;inset:0;padding:0 40px 60px 36px;display:flex;flex-direction:column;justify-content:center;">'
             f'<div style="display:flex;align-items:center;gap:12px;margin-bottom:26px;"><img src="{AVATAR}" style="width:44px;height:44px;border-radius:50%;object-fit:cover;border:2px solid #fff;"/>'
             f'<div><div style="font-size:13px;font-weight:700;letter-spacing:.5px;color:#fff">{NOME}</div><div style="font-size:11px;color:rgba(255,255,255,0.75)">{HANDLE}</div></div></div>'
@@ -237,7 +244,7 @@ def s_cta(s, c):
             f'<div><span style="display:inline-flex;align-items:center;gap:8px;padding:12px 24px;background:{LIGHT_BG};color:{BD};font-weight:700;font-size:13px;letter-spacing:1px;border-radius:28px;">'
             f'<svg width="14" height="14" viewBox="0 0 24 24" fill="{BD}"><path d="M6 3h12v18l-6-4-6 4z"/></svg>{s.get("botao","SALVAR ESTE POST")}</span></div>'
             f'<p style="font-size:9.5px;line-height:1.5;color:rgba(255,255,255,0.55);margin-top:26px;">{("Referências: " + s["referencias"]) if s.get("referencias") else ""}</p>'
-            f'<img src="{LOGO_H_W}" style="width:120px;opacity:.9;margin-top:16px;"/></div>')
+            + logo_img(LOGO_H_W, "width:120px;opacity:.9;margin-top:16px;") + '</div>')
 
 
 # ---------------- Tipos de slide extras (disposições de texto diferentes) ----------------
@@ -269,7 +276,7 @@ def s_grade(s, c):
                     f'<div style="font-size:11px;color:{c["text"]};line-height:1.4;margin-top:4px">{it.get("texto","")}</div></div>' for it in s["itens"])
     return top_bar(c, s.get("tag", "")) + body_wrap(
         label(s.get("rotulo"), c) + h2(s["titulo"], c, 25, 14) +
-        f'<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">{cards}</div>')
+        f'<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">{cards}</div>' + source(s.get("fonte"), c))
 
 def s_linha_do_tempo(s, c):
     """Linha do tempo vertical (fases, semanas, progressão)."""
@@ -298,7 +305,7 @@ def s_manchete(s, c):
     return top_bar(c, s.get("tag", "")) + body_wrap(
         label(s.get("rotulo"), c) +
         f'<h2 style="font-size:{s.get("tamanho", 40)}px;line-height:1.02;font-weight:700;letter-spacing:-1.2px;color:{c["title"]};text-transform:{"uppercase" if s.get("caixa_alta") else "none"};">{md(s["titulo"], c)}</h2>'
-        + para(s.get("texto"), c, 16))
+        + para(s.get("texto"), c, 16) + source(s.get("fonte"), c))
 
 def s_dado(s, c):
     """Número gigante centralizado dentro de um anel, com a frase e a fonte."""
@@ -313,6 +320,25 @@ def s_dado(s, c):
         f'<div style="text-align:center"><div style="font-size:52px;font-weight:700;letter-spacing:-2px;line-height:1;color:{c["title"]}">{s["numero"]}</div>'
         f'<div style="font-size:11px;color:{c["text"]};margin-top:4px">{s.get("unidade","")}</div></div></div>'
         + h2(s["titulo"], c, 22) + para(s.get("texto"), c) + source(s.get("fonte"), c))
+
+def s_barras(s, c):
+    """Barras horizontais comparando grupos (ex.: prevalência). Cada item: rotulo, valor (número),
+    texto (como o número aparece) e cor: 'verde' (destaque), 'coral' (alerta) ou 'neutro'."""
+    mx = max(float(it["valor"]) for it in s["itens"])
+    cores = {"verde": B if c["mode"] != "teal" else "#fff", "coral": CORAL,
+             "neutro": "rgba(255,255,255,0.35)" if c["mode"] != "light" else "rgba(17,23,24,0.25)"}
+    rows = ""
+    for it in s["itens"]:
+        cor = cores.get(it.get("cor", "neutro"), cores["neutro"])
+        pct = float(it["valor"]) / mx * 100
+        rows += (f'<div style="margin-bottom:14px;text-align:left">'
+                 f'<div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px;">'
+                 f'<span style="font-size:12.5px;font-weight:600;color:{c["strong"]}">{it["rotulo"]}</span>'
+                 f'<span style="font-size:22px;font-weight:700;letter-spacing:-0.5px;color:{cor}">{it.get("texto", it["valor"])}</span></div>'
+                 f'<div style="height:12px;border-radius:6px;background:{c["line"]};overflow:hidden">'
+                 f'<div style="height:100%;width:{pct:.1f}%;border-radius:6px;background:{cor}"></div></div></div>')
+    return top_bar(c, s.get("tag", "")) + body_wrap(
+        label(s.get("rotulo"), c) + h2(s["titulo"], c, 24, 18) + rows + para(s.get("texto"), c, 2) + source(s.get("fonte"), c))
 
 # ---------------- Estilos (variar a cada post; a paleta é sempre a mesma) ----------------
 ESTILOS = {
@@ -336,11 +362,11 @@ def decor(estilo, i, c):
     if estilo == "claro" and i > 0:
         out += f'<div style="position:absolute;left:0;top:0;bottom:0;width:5px;background:linear-gradient({B},{BD});"></div>'
     if estilo == "blocos" and c["mode"] == "teal":
-        out += f'<img src="{LOGO_S_W}" style="position:absolute;left:-50px;top:40px;width:240px;opacity:.06;"/>'
+        out += logo_img(LOGO_S_W, "position:absolute;left:-50px;top:40px;width:240px;opacity:.06;")
     return out
 
 TIPOS = dict(capa=s_capa, mito=s_mito, evidencia=s_evidencia, destaque=s_destaque, lista=s_lista, passos=s_passos, cta=s_cta,
-             comparacao=s_comparacao, grade=s_grade, linha_do_tempo=s_linha_do_tempo, citacao=s_citacao, manchete=s_manchete, dado=s_dado)
+             comparacao=s_comparacao, grade=s_grade, linha_do_tempo=s_linha_do_tempo, citacao=s_citacao, manchete=s_manchete, dado=s_dado, barras=s_barras)
 
 def build_html(spec):
     slides = spec["slides"]

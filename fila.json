@@ -29,30 +29,36 @@
    "data": "2026-11-16",
    "hora": "19:00",
    "pasta": "carrosseis/2026-11-16-corrida-joelho",
-   "status": "pendente",
+   "status": "rascunho",
    "tema": "Correr não destrói o joelho",
    "angulo": "Corredores recreativos têm menos artrose de joelho e quadril que sedentários; o que lesiona é aumento brusco de volume (gestão de carga). Conferir: Alentorn-Geli et al., JOSPT 2017 (meta-análise), e evidência sobre progressão de carga.",
-   "ilustracao_sugerida": "joelho em vista lateral (fêmur, tíbia, patela, menisco/cartilagem em verde-água)"
+   "ilustracao_sugerida": "joelho em vista lateral (fêmur, tíbia, patela, menisco/cartilagem em verde-água)",
+   "estilo": "escuro",
+   "layout": "topo"
   },
   {
    "id": "alongamento",
    "data": "2026-11-18",
    "hora": "12:00",
    "pasta": "carrosseis/2026-11-18-alongamento",
-   "status": "pendente",
+   "status": "rascunho",
    "tema": "Alongar antes do treino não previne lesão",
    "angulo": "Alongamento estático pré-treino não reduz lesões; aquecimento ativo/neuromuscular (ex.: FIFA 11+) reduz. Conferir: Lauersen et al., BJSM 2014; meta-análises do FIFA 11+ (ex.: Thorborg et al., BJSM 2017).",
-   "ilustracao_sugerida": "músculos da coxa (isquiotibiais/quadríceps) com fibras em volume"
+   "ilustracao_sugerida": "músculos da coxa (isquiotibiais/quadríceps) com fibras em volume",
+   "estilo": "areia",
+   "layout": "base"
   },
   {
    "id": "ombro-volei",
    "data": "2026-11-20",
    "hora": "12:00",
    "pasta": "carrosseis/2026-11-20-ombro-volei",
-   "status": "pendente",
+   "status": "rascunho",
    "tema": "Ombro do jogador de vôlei: exercícios que previnem lesão",
    "angulo": "Programas preventivos de manguito rotador e escápula reduzem problemas de ombro em atletas overhead. Conferir: Andersson et al., BJSM 2017 (OSTRC Shoulder Injury Prevention Programme). Tema ligado às revisões do próprio Lucas.",
-   "ilustracao_sugerida": "articulação do ombro (úmero, escápula, clavícula, manguito em verde-água)"
+   "ilustracao_sugerida": "articulação do ombro (úmero, escápula, clavícula, manguito em verde-água)",
+   "estilo": "blocos",
+   "layout": "topo"
   },
   {
    "id": "hernia-exame",

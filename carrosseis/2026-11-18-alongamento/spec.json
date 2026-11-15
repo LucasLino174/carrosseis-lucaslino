@@ -1,0 +1,43 @@
+{
+  "titulo": "Alongar antes do treino não previne lesão",
+  "estilo": "areia",
+  "slides": [
+    {"tipo": "capa", "ilustracao": "coxa", "layout": "base", "tag": "MITO",
+     "titulo": "Alongar antes do treino ==não previne== lesão",
+     "subtitulo": "O que **25 ensaios clínicos** com mais de 26 mil pessoas mostram."},
+    {"tipo": "comparacao", "disposicao": "topo", "tag": "MITO x CIÊNCIA",
+     "titulo": "O que a gente ouve e o que os estudos mostram",
+     "esquerda": {"rotulo": "O MITO", "itens": ["Alongar evita lesão", "Quanto mais tempo segurando, melhor", "Aquecer é alongar"]},
+     "direita": {"rotulo": "A CIÊNCIA", "itens": ["Alongar **não reduziu** lesões", "Mais de 60 s por músculo pode tirar um pouco de desempenho", "Força e equilíbrio **protegem mais**"]},
+     "fonte": "Lauersen et al., 2014; Behm et al., 2016"},
+    {"tipo": "evidencia", "tag": "O EXPERIMENTO", "rotulo": "ENSAIO CLÍNICO RANDOMIZADO",
+     "numero": "1.538", "legenda_numero": "recrutas militares<br>sorteados em dois grupos",
+     "titulo": "Alongar no aquecimento **não mudou** o risco de lesão.",
+     "texto": "Os dois grupos aqueceram. Um deles também alongou cada músculo da perna por 20 s. Em 12 semanas: **158 lesões** com alongamento e **175** sem, sem diferença relevante.",
+     "fonte": "Pope et al., <i>Med Sci Sports Exerc</i>, 2000"},
+    {"tipo": "grade", "disposicao": "topo", "tag": "O QUE FUNCIONA",
+     "titulo": "O que **reduziu** lesões, e o que não",
+     "itens": [
+       {"icone": "haltere", "titulo": "Treino de força", "texto": "Lesões caíram para menos de 1/3."},
+       {"icone": "equilibrio", "titulo": "Equilíbrio", "texto": "Cerca de 45% menos lesões."},
+       {"icone": "check", "titulo": "Programas combinados", "texto": "Cerca de 35% menos lesões."},
+       {"icone": "alerta", "titulo": "Alongamento", "texto": "Sem efeito na prevenção."}],
+     "fonte": "Lauersen et al., <i>BJSM</i>, 2014 (25 ensaios, 26.610 pessoas)"},
+    {"tipo": "dado", "disposicao": "centro", "tag": "AQUECIMENTO QUE PROTEGE",
+     "numero": "39%", "anel": 39, "unidade": "menos lesões",
+     "titulo": "com o FIFA 11+, um programa de aquecimento com exercícios específicos",
+     "texto": "Meta-análise com jogadores de futebol amador.",
+     "fonte": "Thorborg et al., <i>BJSM</i>, 2017"},
+    {"tipo": "passos", "disposicao": "base", "tag": "NA PRÁTICA", "rotulo": "ENTÃO POSSO ALONGAR?",
+     "titulo": "Pode. Só não conte com ele para **evitar lesão.**",
+     "itens": [
+       {"titulo": "Gosta de alongar? Tudo bem", "texto": "Até 60 s por músculo teve efeito pequeno no desempenho."},
+       {"titulo": "Termine com movimento", "texto": "Com atividade dinâmica depois, não houve perda clara de desempenho."},
+       {"titulo": "Treine força e equilíbrio", "texto": "São o que mais reduz lesão nos estudos."},
+       {"titulo": "Use um aquecimento estruturado", "texto": "Como o FIFA 11+, no caso do futebol."}]},
+    {"tipo": "cta", "titulo": "Menos tempo parado alongando. **Mais tempo ficando forte.**",
+     "texto": "Salve este post e mande para quem passa 15 minutos alongando antes de treinar.",
+     "referencias": "Lauersen et al., BJSM, 2014. Pope et al., MSSE, 2000. Thorborg et al., BJSM, 2017. Behm et al., APNM, 2016."}
+  ],
+  "legenda": "Alongar antes do treino não previne lesão."
+}

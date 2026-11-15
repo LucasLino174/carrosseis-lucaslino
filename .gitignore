@@ -1,3 +1,5 @@
 __pycache__/
 *.png
+!pipeline/assets/*.png
+!inspiracoes/*.png
 carrosseis/*/carrossel.html

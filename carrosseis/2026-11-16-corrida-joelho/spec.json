@@ -1,0 +1,38 @@
+{
+  "titulo": "Correr não destrói o joelho",
+  "estilo": "escuro",
+  "slides": [
+    {"tipo": "capa", "ilustracao": "joelho", "layout": "topo", "deslocamento_arte": 95, "tag": "MITO OU VERDADE",
+     "titulo": "Correr ==não destrói== o seu joelho",
+     "subtitulo": "O que uma meta-análise com **mais de 114 mil pessoas** mostrou."},
+    {"tipo": "manchete", "disposicao": "centro", "tag": "A VIRADA",
+     "titulo": "Quem corre por lazer tem **menos** artrose do que quem não corre.",
+     "texto": "Parece contraintuitivo. Mas é o que os dados mostram.", "tamanho": 34},
+    {"tipo": "barras", "disposicao": "topo", "tag": "OS NÚMEROS", "rotulo": "ARTROSE DE QUADRIL E JOELHO",
+     "titulo": "Quantos tinham artrose em cada grupo",
+     "itens": [
+       {"rotulo": "Corredores recreativos", "valor": 3.5, "texto": "3,5%", "cor": "verde"},
+       {"rotulo": "Sedentários (não corredores)", "valor": 10.2, "texto": "10,2%", "cor": "neutro"},
+       {"rotulo": "Corredores de elite", "valor": 13.3, "texto": "13,3%", "cor": "coral"}],
+     "fonte": "Alentorn-Geli et al., <i>JOSPT</i>, 2017. 17 estudos, 114.829 pessoas."},
+    {"tipo": "destaque", "tag": "E OS ATLETAS?", "rotulo": "OS DOIS EXTREMOS",
+     "titulo": "O problema está no **excesso** e no **sedentarismo.**",
+     "texto": "Os autores associam a artrose tanto a anos de volume e intensidade muito altos quanto a uma vida parada.",
+     "caixa_rotulo": "COM HONESTIDADE", "caixa": "São estudos de associação: **não provam causa**. Lesões antigas no joelho podem pesar no resultado."},
+    {"tipo": "dado", "disposicao": "centro", "tag": "O QUE MACHUCA", "numero": "+30%", "unidade": "de distância por semana",
+     "titulo": "Iniciantes que aumentaram a distância assim tiveram **mais lesões por sobrecarga.**",
+     "texto": "Estudo com 874 corredores iniciantes. Resultado exploratório, no limite da significância estatística.",
+     "fonte": "Nielsen et al., <i>JOSPT</i>, 2014"},
+    {"tipo": "passos", "disposicao": "topo", "tag": "NA PRÁTICA", "rotulo": "COMO CORRER CUIDANDO DO JOELHO",
+     "titulo": "O joelho gosta de **carga bem dosada.**",
+     "itens": [
+       {"titulo": "Suba o volume aos poucos", "texto": "Evite saltos grandes na distância de uma semana para outra."},
+       {"titulo": "Faça treino de força", "texto": "Está entre as estratégias que mais reduzem lesões no esporte."},
+       {"titulo": "Fuja dos extremos", "texto": "Nem vida parada, nem volume altíssimo por anos sem orientação."},
+       {"titulo": "Dor que persiste? Avaliação", "texto": "Um olhar individual ajuda a ajustar a carga para o seu corpo."}]},
+    {"tipo": "cta", "titulo": "Correr não é o vilão. **O excesso sem preparo é.**",
+     "texto": "Salve este post e mande para aquele amigo que tem medo de começar a correr.",
+     "referencias": "Alentorn-Geli et al., JOSPT, 2017. Nielsen et al., JOSPT, 2014. Lauersen et al., BJSM, 2014."}
+  ],
+  "legenda": "Correr não destrói o seu joelho. 🏃"
+}
