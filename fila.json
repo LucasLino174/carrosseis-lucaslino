@@ -55,12 +55,13 @@
    "data": "2026-11-20",
    "hora": "12:00",
    "pasta": "carrosseis/2026-11-20-ombro-volei",
-   "status": "aprovado",
+   "status": "publicado",
    "tema": "Ombro do jogador de vôlei: exercícios que previnem lesão",
    "angulo": "Programas preventivos de manguito rotador e escápula reduzem problemas de ombro em atletas overhead. Conferir: Andersson et al., BJSM 2017 (OSTRC Shoulder Injury Prevention Programme). Tema ligado às revisões do próprio Lucas.",
    "ilustracao_sugerida": "articulação do ombro (úmero, escápula, clavícula, manguito em verde-água)",
    "estilo": "blocos",
-   "layout": "topo"
+   "layout": "topo",
+   "media_id": "18659612839062854"
   },
   {
    "id": "hernia-exame",
