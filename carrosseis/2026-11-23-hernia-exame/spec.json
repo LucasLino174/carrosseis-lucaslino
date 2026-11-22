@@ -1,0 +1,47 @@
+{
+  "titulo": "Seu exame mostra hérnia, mas isso não quer dizer que ela causa a sua dor",
+  "estilo": "verde",
+  "slides": [
+    {"tipo": "capa", "ilustracao": "disco_lombar", "layout": "base", "tag": "COLUNA",
+     "titulo": "Hérnia no exame ==não é sentença== de dor",
+     "subtitulo": "Achados no disco aparecem até em quem **não sente dor nenhuma**."},
+    {"tipo": "citacao", "disposicao": "centro", "tag": "A CONCLUSÃO",
+     "frase": "Muitos achados de degeneração na imagem provavelmente fazem parte do **envelhecimento normal** e não estão associados à dor.",
+     "fonte": "Brinjikji et al., <i>AJNR</i>, 2015 (tradução livre)"},
+    {"tipo": "barras", "disposicao": "topo", "tag": "PESSOAS SEM DOR",
+     "titulo": "Quanto aparece na imagem de quem **não tem dor nas costas**",
+     "itens": [
+       {"rotulo": "Degeneração do disco · 20 anos", "valor": 37, "texto": "37%", "cor": "neutro"},
+       {"rotulo": "Degeneração do disco · 80 anos", "valor": 96, "texto": "96%", "cor": "verde"},
+       {"rotulo": "Abaulamento do disco · 20 anos", "valor": 30, "texto": "30%", "cor": "neutro"},
+       {"rotulo": "Abaulamento do disco · 80 anos", "valor": 84, "texto": "84%", "cor": "verde"}],
+     "fonte": "Brinjikji et al., <i>AJNR</i>, 2015 (33 estudos, 3.110 pessoas)"},
+    {"tipo": "dado", "disposicao": "centro", "tag": "O CLÁSSICO", "numero": "52%", "anel": 52, "unidade": "com abaulamento",
+     "titulo": "de 98 pessoas sem dor nas costas tinham abaulamento de disco na ressonância",
+     "texto": "Só 36% tinham todos os discos normais.",
+     "fonte": "Jensen et al., <i>N Engl J Med</i>, 1994"},
+    {"tipo": "destaque", "disposicao": "base", "tag": "COM HONESTIDADE", "rotulo": "ENTÃO O EXAME NÃO SERVE?",
+     "titulo": "Serve. Mas ele **não fala sozinho.**",
+     "texto": "Em adultos de até 50 anos, alguns achados (como abaulamento e extrusão) aparecem mais em quem tem dor. Por isso a imagem precisa ser lida junto com a sua história e o exame físico.",
+     "caixa_rotulo": "RESUMINDO", "caixa": "Achado na imagem é **pista**, não diagnóstico.",
+     "fonte": "Brinjikji et al., <i>AJNR</i>, 2015 (meta-análise)"},
+    {"tipo": "grade", "disposicao": "topo", "tag": "BOA NOTÍCIA", "rotulo": "REGRESSÃO ESPONTÂNEA",
+     "titulo": "A hérnia pode **diminuir sozinha**",
+     "itens": [
+       {"icone": "check", "titulo": "96% · Sequestro", "texto": "o tipo mais “grave” é o que mais regride."},
+       {"icone": "check", "titulo": "70% · Extrusão", "texto": "regrediram no tratamento conservador."},
+       {"icone": "pulso", "titulo": "41% · Protrusão", "texto": "também podem diminuir com o tempo."},
+       {"icone": "pulso", "titulo": "13% · Abaulamento", "texto": "é comum e muitas vezes só idade."}],
+     "fonte": "Chiu et al., <i>Clin Rehabil</i>, 2015 (revisão sistemática)"},
+    {"tipo": "passos", "disposicao": "base", "tag": "NA PRÁTICA", "rotulo": "COM O LAUDO NA MÃO",
+     "titulo": "O que fazer antes de **se assustar**",
+     "itens": [
+       {"titulo": "Não se prenda às palavras do laudo", "texto": "Desidratação, abaulamento e protrusão são frequentes em quem não sente dor."},
+       {"titulo": "Leve o exame para avaliação", "texto": "A decisão vem da sua história e do exame físico, não só da imagem."},
+       {"titulo": "Lembre: hérnia pode regredir", "texto": "Mesmo as maiores costumam diminuir com tratamento conservador."}]},
+    {"tipo": "cta", "titulo": "Seu exame **não é você.**",
+     "texto": "Salve e mande para quem ficou assustado com o laudo. Na dúvida, procure um fisioterapeuta para avaliar.",
+     "referencias": "Brinjikji et al., AJNR, 2015 (2 estudos). Jensen et al., NEJM, 1994. Chiu et al., Clin Rehabil, 2015."}
+  ],
+  "legenda": "Hérnia no exame não é sentença de dor."
+}

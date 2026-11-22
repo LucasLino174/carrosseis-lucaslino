@@ -66,7 +66,7 @@ EXTRA_DEFS = """
 
 STROKE = 'stroke="#9C8F77" stroke-width=".6" stroke-linejoin="round"'
 
-def frame(content, B, glow=(215, 260, 190, 180), fade_v=(0, .14, .32, .7, .9), fade_h=(0, .16, .84, 1)):
+def frame(content, B, glow=(215, 260, 190, 180), fade_v=(0, .14, .32, .7, .9), fade_h=(0, .16, .84, 1), defs_extra="", glow_op=.40):
     """Moldura 420x525: glow verde-água atrás e máscaras que esmaecem a arte nas bordas."""
     gx, gy, rx, ry = glow
     v0, v1, v2, v3, v4 = fade_v
@@ -90,12 +90,12 @@ def frame(content, B, glow=(215, 260, 190, 180), fade_v=(0, .14, .32, .7, .9), f
     sv = eased(v1, v2, v3, v4)
     sh = eased(h0, h1, h2, h3)
     return f'''<svg width="420" height="525" viewBox="0 0 420 525" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0">
-<defs>{DEFS}{EXTRA_DEFS}
+<defs>{DEFS}{EXTRA_DEFS}{defs_extra}
 <linearGradient id="fadeV" x1="0" y1="0" x2="0" y2="1">{sv}</linearGradient>
 <linearGradient id="fadeH" x1="0" y1="0" x2="1" y2="0">{sh}</linearGradient>
 <mask id="fadeHm" maskUnits="userSpaceOnUse" x="0" y="0" width="420" height="525"><rect width="420" height="525" fill="url(#fadeH)"/></mask>
 <mask id="fadeVm" maskUnits="userSpaceOnUse" x="0" y="0" width="420" height="525"><rect width="420" height="525" fill="url(#fadeV)"/></mask>
-<radialGradient id="glow" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="{B}" stop-opacity=".40"/><stop offset="1" stop-color="{B}" stop-opacity="0"/></radialGradient>
+<radialGradient id="glow" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="{B}" stop-opacity="{glow_op}"/><stop offset="1" stop-color="{B}" stop-opacity="0"/></radialGradient>
 </defs>
 <ellipse cx="{gx}" cy="{gy}" rx="{rx}" ry="{ry}" fill="url(#glow)"/>
 <g mask="url(#fadeHm)"><g mask="url(#fadeVm)">{content}</g></g>
