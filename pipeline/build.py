@@ -56,6 +56,19 @@ def _font(weight, file):
             return ("@font-face{font-family:'Poppins';font-weight:%d;font-style:normal;"
                     "src:url(data:font/ttf;base64,%s) format('truetype');}" % (weight, data))
     return ""
+def _wfont(family, weight, style, file):
+    f = ROOT / "assets/fonts" / file
+    if not f.exists():
+        return ""
+    data = base64.b64encode(f.read_bytes()).decode()
+    return ("@font-face{font-family:'%s';font-weight:%d;font-style:%s;src:url(data:font/woff2;base64,%s) format('woff2');}" % (family, weight, style, data))
+FONTS_EXTRA = (_wfont("Oswald", 700, "normal", "oswald-latin-700-normal.woff2") + _wfont("Oswald", 600, "normal", "oswald-latin-600-normal.woff2") +
+               _wfont("Caveat", 700, "normal", "caveat-latin-700-normal.woff2") +
+               _wfont("Playfair Display", 700, "normal", "playfair-display-latin-700-normal.woff2") +
+               _wfont("Playfair Display", 700, "italic", "playfair-display-latin-700-italic.woff2"))
+FONT_IMPACTO = "'Oswald','Poppins',sans-serif"       # condensada gigante, caixa alta
+FONT_SERIFA = "'Playfair Display',Georgia,serif"      # elegante, itálico para ênfase
+FONT_SCRIPT = "'Caveat','Poppins',cursive"            # manuscrita, só como acento
 FONTS = "".join(_font(w, f) for w, f in [(300, "Poppins-Light.ttf"), (400, "Poppins-Regular.ttf"),
                                            (500, "Poppins-Medium.ttf"), (700, "Poppins-Bold.ttf")])
 
@@ -120,6 +133,97 @@ def icon(name, color, size=18):
     return (f'<svg width="{size}" height="{size}" viewBox="0 0 24 24" fill="none" stroke="{color}" stroke-width="1.8" '
             f'stroke-linecap="round" stroke-linejoin="round">{ICONS.get(name, ICONS["check"])}</svg>')
 
+
+# ---------------- Recursos "menos cara de IA": grão, papel rasgado, contorno gigante, panorâmica ----------------
+import random
+_GRAO = ("data:image/svg+xml;utf8," +
+         "%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")
+
+def grao(c, forca=1.0):
+    """Textura de papel/grão por cima do fundo (abaixo do texto)."""
+    op = (0.10 if c["mode"] == "light" else 0.16) * forca
+    blend = "multiply" if c["mode"] == "light" else "screen"
+    return f'<div style="position:absolute;inset:0;background:url(\\"{_GRAO}\\");opacity:{op};mix-blend-mode:{blend};pointer-events:none;z-index:1;"></div>'
+
+def _borda_rasgada(seed, largura=420, amp=9, passo=9):
+    rnd = random.Random(seed)
+    pts, x = [], 0
+    while x <= largura:
+        pts.append((x, rnd.uniform(-amp, amp) + rnd.choice([0, 0, 3, -3])))
+        x += rnd.uniform(passo * .5, passo * 1.5)
+    return pts
+
+def papel_rasgado(lado, cor, tamanho=130, seed=1, c=None):
+    """Faixa de papel rasgado numa borda ('topo' ou 'base'): curva suave deformada por turbulência
+    (borda orgânica e fibrosa), camada branca irregular por baixo e sombra suave."""
+    rnd = random.Random(seed)
+    meio = tamanho / 2
+    pts, x = [], -20
+    while x <= 440:
+        pts.append((x, meio + rnd.uniform(-14, 14)))
+        x += rnd.uniform(38, 70)
+    def curva(dy):
+        d = f"M{pts[0][0]:.0f},{pts[0][1] + dy:.1f}"
+        for k in range(1, len(pts)):
+            x0, y0 = pts[k-1]; x1, y1 = pts[k]; xm = (x0 + x1) / 2
+            d += f" C{xm:.0f},{y0 + dy:.1f} {xm:.0f},{y1 + dy:.1f} {x1:.0f},{y1 + dy:.1f}"
+        return d
+    fecho = f" L440,{tamanho + 20} L-20,{tamanho + 20} Z" if lado == "base" else " L440,-20 L-20,-20 Z"
+    off = -9 if lado == "base" else 9
+    pos = "bottom:0;" if lado == "base" else "top:0;"
+    fid = f"rg{seed}{lado}"
+    return (f'<svg style="position:absolute;left:0;{pos}z-index:2;overflow:visible" width="420" height="{tamanho}" viewBox="0 0 420 {tamanho}">'
+            f'<defs><filter id="{fid}" x="-5%" y="-30%" width="110%" height="160%"><feTurbulence type="fractalNoise" baseFrequency="0.035 0.09" numOctaves="4" seed="{seed}" result="n"/>'
+            f'<feDisplacementMap in="SourceGraphic" in2="n" scale="16" xChannelSelector="R" yChannelSelector="G"/></filter>'
+            f'<filter id="{fid}s" x="-5%" y="-30%" width="110%" height="160%"><feTurbulence type="fractalNoise" baseFrequency="0.05 0.12" numOctaves="3" seed="{seed+7}" result="n"/>'
+            f'<feDisplacementMap in="SourceGraphic" in2="n" scale="12" result="d"/><feGaussianBlur in="d" stdDeviation="2.4"/></filter></defs>'
+            f'<path d="{curva(off)}{fecho}" fill="#000" opacity=".28" transform="translate(0,{-3 if lado=="base" else 3})" filter="url(#{fid}s)"/>'
+            f'<path d="{curva(off)}{fecho}" fill="#F7F4EE" filter="url(#{fid})"/>'
+            f'<path d="{curva(0)}{fecho}" fill="{cor}" filter="url(#{fid})"/></svg>')
+
+def palavra_fundo(texto, c, tamanho=220, x=-20, y=60, rot=0, vertical=False, cheio=False):
+    """Palavra gigante em contorno (outline), cortada pela borda, ao fundo do slide."""
+    cor = "rgba(43,126,115,0.28)" if c["mode"] == "light" else "rgba(108,195,183,0.30)"
+    if c["mode"] == "teal":
+        cor = "rgba(255,255,255,0.28)"
+    fill = cor.replace("0.28", "0.10").replace("0.30", "0.10") if cheio else "transparent"
+    wm = "writing-mode:vertical-rl;" if vertical else ""
+    return (f'<div style="position:absolute;left:{x}px;top:{y}px;z-index:2;font-family:{FONT_IMPACTO};font-weight:700;font-size:{tamanho}px;line-height:.9;'
+            f'letter-spacing:-2px;text-transform:uppercase;white-space:nowrap;color:{fill};-webkit-text-stroke:1.6px {cor};transform:rotate({rot}deg);transform-origin:left top;{wm}pointer-events:none;">{texto}</div>')
+
+def painel_vidro(inner, c, extra=""):
+    """Cartão translúcido (vidro) com borda fina e sombra suave."""
+    if c["mode"] == "light":
+        bg, br = "rgba(255,255,255,0.62)", "rgba(43,126,115,0.18)"
+    else:
+        bg, br = "rgba(255,255,255,0.09)", "rgba(255,255,255,0.20)"
+    return (f'<div style="background:{bg};border:1px solid {br};border-radius:16px;backdrop-filter:blur(8px);'
+            f'box-shadow:0 10px 28px rgba(0,0,0,{0.08 if c["mode"]=="light" else 0.28});padding:16px 18px;{extra}">{inner}</div>')
+
+def panoramica(spec, i, total):
+    """Elementos que atravessam a divisa entre o slide N e o N+1.
+    Em spec: "panoramicas": [{"de": 2, "tipo": "palavra"|"fita"|"seta", "texto": "FORÇA", ...}] (de = nº do slide, base 1)."""
+    out = ""
+    for p in spec.get("panoramicas", []):
+        a = p["de"] - 1
+        if i not in (a, a + 1):
+            continue
+        off = 0 if i == a else -420          # slide A mostra a metade esquerda; B, a direita
+        cor = p.get("cor", B)
+        y = p.get("y", 250)
+        if p["tipo"] == "palavra":
+            el = (f'<div style="position:absolute;left:{p.get("x", 20)}px;top:{y}px;font-family:{FONT_IMPACTO};font-weight:700;font-size:{p.get("tamanho", 230)}px;line-height:.9;letter-spacing:-3px;'
+                  f'text-transform:uppercase;white-space:nowrap;color:transparent;-webkit-text-stroke:2px {cor};opacity:{p.get("opacidade", .55)};">{p["texto"]}</div>')
+        elif p["tipo"] == "fita":
+            el = (f'<svg style="position:absolute;left:0;top:0" width="840" height="525" viewBox="0 0 840 525"><path d="M-10 {y+60} C 200 {y-90}, 330 {y+190}, 420 {y+40} S 640 {y-120}, 850 {y+30}" '
+                  f'fill="none" stroke="{cor}" stroke-width="{p.get("espessura", 14)}" stroke-linecap="round" opacity=".9"/>'
+                  f'<path d="M-10 {y+60} C 200 {y-90}, 330 {y+190}, 420 {y+40} S 640 {y-120}, 850 {y+30}" fill="none" stroke="#fff" stroke-opacity=".35" stroke-width="2" stroke-linecap="round" transform="translate(0,-4)"/></svg>')
+        else:  # seta que cruza a divisa
+            el = (f'<svg style="position:absolute;left:0;top:0" width="840" height="525" viewBox="0 0 840 525"><path d="M300 {y} L 520 {y}" stroke="{cor}" stroke-width="5" stroke-linecap="round"/>'
+                  f'<path d="M495 {y-20} L 525 {y} L 495 {y+20}" fill="none" stroke="{cor}" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg>')
+        out += f'<div style="position:absolute;left:{off}px;top:0;width:840px;height:525px;z-index:3;pointer-events:none;">{el}</div>'
+    return out
+
 # ---------------- Componentes fixos ----------------
 def progress_bar(i, total, c, fill=None):
     pct = (i + 1) / total * 100
@@ -160,7 +264,7 @@ def body_wrap(inner):
     v = DISPOSICAO.get(_ALINHAR["v"], "flex-end")
     top_pad = "72px" if v == "flex-start" else "0"
     ta = "text-align:center;align-items:center;" if _ALINHAR["centro_texto"] else ""
-    return f'<div style="position:absolute;inset:0;padding:{top_pad} 48px 60px 36px;display:flex;flex-direction:column;justify-content:{v};{ta}">{inner}</div>'
+    return f'<div style="position:absolute;inset:0;z-index:5;padding:{top_pad} 48px 60px 36px;display:flex;flex-direction:column;justify-content:{v};{ta}">{inner}</div>'
 
 def h2(text, c, size=27, mb=0):
     return f'<h2 style="font-size:{size}px;line-height:1.12;font-weight:700;letter-spacing:-0.5px;color:{c["title"]};margin-bottom:{mb}px;">{md(text, c)}</h2>'
@@ -181,7 +285,13 @@ def s_capa(s, c):
     tcol = "#fff" if dark else INK
     sub_c = "rgba(255,255,255,0.65)" if dark else GRAY
     rgb = ",".join(str(int(bgc[k:k+2], 16)) for k in (1, 3, 5))
-    titulo_html = (f'<h1 style="font-size:{s.get("tamanho", 28)}px;line-height:1.1;font-weight:700;letter-spacing:-0.6px;color:{tcol};text-transform:uppercase;">{titulo}</h1>'
+    if s.get("tipografia") == "impacto":
+        h1 = f'<h1 style="font-family:{FONT_IMPACTO};font-size:{s.get("tamanho", 46)}px;line-height:1.14;font-weight:700;letter-spacing:-0.5px;color:{tcol};text-transform:uppercase;">{titulo}</h1>'
+    elif s.get("tipografia") == "serifa":
+        h1 = f'<h1 style="font-family:{FONT_SERIFA};font-size:{s.get("tamanho", 34)}px;line-height:1.08;font-weight:700;letter-spacing:-0.4px;color:{tcol};">{titulo}</h1>'
+    else:
+        h1 = f'<h1 style="font-size:{s.get("tamanho", 28)}px;line-height:1.1;font-weight:700;letter-spacing:-0.6px;color:{tcol};text-transform:uppercase;">{titulo}</h1>'
+    titulo_html = (h1 +
                    f'<div style="width:34px;height:2px;background:{B if dark else BD};margin:12px 0 10px;border-radius:2px;"></div>'
                    f'<p style="font-size:12.5px;line-height:1.45;color:{sub_c};">{md_strong(s.get("subtitulo", ""), c)}</p>')
     marca = logo_img(LOGO_S_W if dark else LOGO_S, "position:absolute;right:30px;bottom:56px;width:30px;opacity:.55;z-index:6") if s.get("marca", True) else ""
@@ -300,11 +410,18 @@ def s_citacao(s, c):
         f'<div style="display:flex;align-items:center;gap:10px;margin-top:18px;"><div style="width:26px;height:2px;background:{q}"></div>'
         f'<span style="font-size:11px;color:{c["muted"]}">{s.get("fonte","")}</span></div>')
 
+def _fonte_css(fonte, tamanho):
+    if fonte == "impacto":
+        return f"font-family:{FONT_IMPACTO};font-size:{tamanho}px;line-height:.98;font-weight:700;letter-spacing:-0.5px;"
+    if fonte == "serifa":
+        return f"font-family:{FONT_SERIFA};font-size:{tamanho}px;line-height:1.06;font-weight:700;letter-spacing:-0.6px;"
+    return f"font-size:{tamanho}px;line-height:1.02;font-weight:700;letter-spacing:-1.2px;"
+
 def s_manchete(s, c):
     """Só tipografia: uma afirmação enorme. Bom para virada de narrativa."""
     return top_bar(c, s.get("tag", "")) + body_wrap(
         label(s.get("rotulo"), c) +
-        f'<h2 style="font-size:{s.get("tamanho", 40)}px;line-height:1.02;font-weight:700;letter-spacing:-1.2px;color:{c["title"]};text-transform:{"uppercase" if s.get("caixa_alta") else "none"};">{md(s["titulo"], c)}</h2>'
+        f'<h2 style="{_fonte_css(s.get("tipografia"), s.get("tamanho", 40))}color:{c["title"]};text-transform:{"uppercase" if (s.get("caixa_alta") or s.get("tipografia") == "impacto") else "none"};">{md(s["titulo"], c)}</h2>'
         + para(s.get("texto"), c, 16) + source(s.get("fonte"), c))
 
 def s_dado(s, c):
@@ -340,6 +457,54 @@ def s_barras(s, c):
     return top_bar(c, s.get("tag", "")) + body_wrap(
         label(s.get("rotulo"), c) + h2(s["titulo"], c, 24, 18) + rows + para(s.get("texto"), c, 2) + source(s.get("fonte"), c))
 
+
+def s_cartoes(s, c):
+    """Cartões translúcidos (vidro) empilhados, cada um com ícone de check/ícone e texto curto."""
+    cards = ""
+    for k, it in enumerate(s["itens"]):
+        ic = it.get("icone", "check")
+        cards += painel_vidro(
+            f'<div style="display:flex;align-items:center;gap:14px;"><div style="width:34px;height:34px;border-radius:50%;background:{c["icon_bg"]};display:flex;align-items:center;justify-content:center;flex:none;">{icon(ic, c["accent"], 18)}</div>'
+            f'<div><div style="font-size:14px;font-weight:700;color:{c["title"]};line-height:1.2;">{md(it["titulo"], c)}</div>'
+            + (f'<div style="font-size:11.5px;color:{c["text"]};margin-top:3px;line-height:1.4;">{md_strong(it["texto"], c)}</div>' if it.get("texto") else "") + '</div></div>',
+            c, "margin-top:10px;width:100%;" + (f"margin-left:{(k%2)*14}px;" if s.get("escada", True) else ""))
+    return top_bar(c, s.get("tag", "")) + body_wrap(
+        label(s.get("rotulo"), c) + f'<h2 style="{_fonte_css(s.get("tipografia"), s.get("tamanho", 28))}color:{c["title"]};">{md(s["titulo"], c)}</h2>' + cards + source(s.get("fonte_ref"), c))
+
+def s_numeros(s, c):
+    """Faixa arredondada com 01 / 02 / 03 gigantes e translúcidos e uma frase curta em cada."""
+    ghost = "rgba(255,255,255,0.14)" if c["mode"] != "light" else "rgba(43,126,115,0.16)"
+    cols = ""
+    for k, it in enumerate(s["itens"]):
+        cols += (f'<div style="flex:1;position:relative;padding:34px 8px 8px;">'
+                 f'<div style="position:absolute;left:0;top:-6px;font-family:{FONT_IMPACTO};font-weight:700;font-size:78px;line-height:1;color:{ghost};">{k+1:02d}</div>'
+                 f'<div style="position:relative;font-size:12.5px;font-weight:700;color:{c["title"]};line-height:1.25;">{md(it["titulo"], c)}</div>'
+                 f'<div style="position:relative;font-size:10.5px;color:{c["text"]};margin-top:5px;line-height:1.4;">{md_strong(it.get("texto",""), c)}</div></div>')
+    faixa = painel_vidro(f'<div style="display:flex;gap:6px;">{cols}</div>', c, "padding:14px 12px 12px;margin-top:20px;")
+    return top_bar(c, s.get("tag", "")) + body_wrap(
+        label(s.get("rotulo"), c) + f'<h2 style="{_fonte_css(s.get("tipografia"), s.get("tamanho", 28))}color:{c["title"]};">{md(s["titulo"], c)}</h2>' + faixa + para(s.get("texto"), c, 14) + source(s.get("fonte_ref"), c))
+
+def s_dialogo(s, c):
+    """Duas falas: 'Paciente diz' (script, terracota) x 'A ciência diz' (verde-água). Tom de conversa."""
+    a = (f'<div style="font-family:{FONT_SCRIPT};font-size:24px;color:{CORAL};line-height:1;">{s.get("quem_a", "O paciente diz")}</div>'
+         f'<div style="font-family:{FONT_SERIFA};font-style:italic;font-size:21px;line-height:1.25;color:{c["title"]};margin-top:6px;">&ldquo;{md(s["fala_a"], c)}&rdquo;</div>')
+    b = (f'<div style="font-family:{FONT_SCRIPT};font-size:24px;color:{c["accent"]};line-height:1;">{s.get("quem_b", "A ciência diz")}</div>'
+         f'<div style="font-size:15px;line-height:1.4;color:{c["title"]};margin-top:6px;font-weight:500;">{md(s["fala_b"], c)}</div>')
+    seta = f'<svg width="26" height="40" viewBox="0 0 26 40" style="margin:6px 0 6px 18px"><path d="M13 2 C 4 14, 22 22, 13 36 M6 29 L13 37 L21 30" fill="none" stroke="{c["accent"]}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+    return top_bar(c, s.get("tag", "")) + body_wrap(a + seta + painel_vidro(b, c, "margin-top:2px;") + para(s.get("texto"), c, 14) + source(s.get("fonte_ref"), c))
+
+def s_arte(s, c):
+    """Anatomia 3D enorme que sangra para fora do quadro, com uma frase curta por cima/ao lado."""
+    mod = importlib.import_module("ilustracoes." + s["ilustracao"])
+    bgc = c.get("base", DARK_BG if c["mode"] != "light" else LIGHT_BG)
+    art = mod.cover_svg(B, BD, bgc)
+    esc, dx, dy = s.get("escala", 1.5), s.get("x", 0), s.get("y", 0)
+    rgb = ",".join(str(int(bgc[k:k+2], 16)) for k in (1, 3, 5))
+    fade = (f'<div style="position:absolute;left:0;right:0;bottom:0;height:230px;background:linear-gradient(to top,{bgc} 55%,rgba({rgb},0));z-index:4"></div>'
+            if s.get("degrade_base", True) else "")
+    return (f'<div style="position:absolute;inset:0;transform:translate({dx}px,{dy}px) scale({esc});transform-origin:{s.get("origem","60% 35%")};">{art}</div>' + fade + top_bar(c, s.get("tag", "")) + body_wrap(
+        f'<h2 style="{_fonte_css(s.get("tipografia"), s.get("tamanho", 30))}color:{c["title"]};{"text-transform:uppercase;" if s.get("tipografia")=="impacto" else ""}">{md(s["titulo"], c)}</h2>' + para(s.get("texto"), c, 10) + source(s.get("fonte_ref"), c)))
+
 # ---------------- Estilos (variar a cada post; a paleta é sempre a mesma) ----------------
 ESTILOS = {
     "alternado": ["claro", "escuro"],            # claro/escuro intercalados (estilo do 1º post)
@@ -366,7 +531,7 @@ def decor(estilo, i, c):
     return out
 
 TIPOS = dict(capa=s_capa, mito=s_mito, evidencia=s_evidencia, destaque=s_destaque, lista=s_lista, passos=s_passos, cta=s_cta,
-             comparacao=s_comparacao, grade=s_grade, linha_do_tempo=s_linha_do_tempo, citacao=s_citacao, manchete=s_manchete, dado=s_dado, barras=s_barras)
+             comparacao=s_comparacao, cartoes=s_cartoes, numeros=s_numeros, dialogo=s_dialogo, arte=s_arte, grade=s_grade, linha_do_tempo=s_linha_do_tempo, citacao=s_citacao, manchete=s_manchete, dado=s_dado, barras=s_barras)
 
 def build_html(spec):
     slides = spec["slides"]
@@ -384,10 +549,19 @@ def build_html(spec):
             _ALINHAR["centro_texto"] = s.get("disposicao") == "centro"
             c = pal({"claro": True, "escuro": False, "verde": "teal", "areia": "areia", "marinho": "marinho"}[modo])
             bg = c["bg"]
-            inner = (decor(spec.get("estilo", "alternado"), i, c) + TIPOS[s["tipo"]](s, c) +
+            extras = ""
+            if s.get("grao", spec.get("textura", False)):
+                extras += grao(c, s.get("grao_forca", 1.0) if isinstance(s.get("grao_forca"), (int, float)) else 1.0)
+            if s.get("rasgado"):
+                r = s["rasgado"]
+                extras += papel_rasgado(r.get("lado", "base"), r.get("cor", CORAL), r.get("tamanho", 130), r.get("seed", i + 1), c)
+            if s.get("palavra_fundo"):
+                extras += palavra_fundo(**s["palavra_fundo"], c=c) if isinstance(s["palavra_fundo"], dict) else palavra_fundo(s["palavra_fundo"], c)
+            extras += panoramica(spec, i, total)
+            inner = (decor(spec.get("estilo", "alternado"), i, c) + extras + TIPOS[s["tipo"]](s, c) +
                      progress_bar(i, total, c, c["fill"] if c["mode"] == "teal" else None) + ("" if last else swipe_arrow(c)))
         out.append(f'<div class="slide" style="{bg}">{inner}</div>')
-    css = FONTS + """*{margin:0;padding:0;box-sizing:border-box}
+    css = FONTS + FONTS_EXTRA + """*{margin:0;padding:0;box-sizing:border-box}
 body{background:#E9EEED;font-family:'Poppins',sans-serif;display:flex;justify-content:center;padding:24px 0;-webkit-font-smoothing:antialiased}
 .ig-frame{width:420px;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 8px 30px rgba(0,0,0,.12)}
 .ig-header{display:flex;align-items:center;gap:10px;padding:12px 14px}.ig-avatar{width:32px;height:32px;border-radius:50%;object-fit:cover}
