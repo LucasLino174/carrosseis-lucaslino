@@ -1,0 +1,182 @@
+{
+ "titulo": "Teste visual 2",
+ "estilo": "editorial",
+ "textura": true,
+ "fio": {
+  "y": 481,
+  "amp": 6,
+  "periodo": 260
+ },
+ "panoramicas": [
+  {
+   "de": 5,
+   "tipo": "arte",
+   "ilustracao": "ombro",
+   "x": 235,
+   "y": -40,
+   "escala": 0.9
+  },
+  {
+   "de": 6,
+   "tipo": "palavra",
+   "texto": "FORÇA",
+   "y": 330,
+   "tamanho": 210,
+   "opacidade": 0.4
+  }
+ ],
+ "slides": [
+  {
+   "tipo": "capa",
+   "ilustracao": "coluna",
+   "layout": "base",
+   "tipografia": "serifa",
+   "tamanho": 34,
+   "tag": "DEMO · NOVO MODELO",
+   "titulo": "Sua dor não é ==fraqueza==: é um sinal",
+   "subtitulo": "O que a fisioterapia baseada em evidências diz, **em 6 passos**."
+  },
+  {
+   "tipo": "cartoes",
+   "tag": "O QUE ENTRA",
+   "tipografia": "impacto",
+   "tamanho": 30,
+   "titulo": "O que os estudos **avaliam**",
+   "modelo": {
+    "ilustracao": "disco_lombar",
+    "x": 170,
+    "y": 52,
+    "w": 240,
+    "h": 170,
+    "escala": 0.55,
+    "ox": -10,
+    "oy": -30
+   },
+   "itens": [
+    {
+     "titulo": "Carga progressiva",
+     "texto": "Aumento gradual de volume e intensidade, com margem para recuperar entre as sessões.",
+     "chip": "3x",
+     "chip_texto": "POR SEMANA",
+     "icone": "carga"
+    },
+    {
+     "titulo": "Movimento sem medo",
+     "texto": "Manter-se ativo costuma funcionar melhor do que repouso prolongado em dores comuns.",
+     "chip": "+",
+     "chip_texto": "ATIVIDADE",
+     "icone": "check"
+    },
+    {
+     "titulo": "Avaliação individual",
+     "texto": "A mesma dor pode ter causas diferentes; o exame físico orienta a conduta.",
+     "chip": "1:1",
+     "chip_texto": "CADA CASO",
+     "icone": "livro"
+    }
+   ],
+   "fundo": "claro"
+  },
+  {
+   "tipo": "dado",
+   "tag": "O NÚMERO",
+   "numero": "68%",
+   "unidade": "EXEMPLO ILUSTRATIVO",
+   "anel": 68,
+   "titulo": "Dos casos melhoram com exercício orientado",
+   "texto": "Dado de teste, apenas para avaliar o layout. Nos posts reais o número vem de um estudo do PubMed, com fonte no rodapé.",
+   "fonte": "Fonte do estudo, revista, ano",
+   "disposicao": "base",
+   "fundo": "marinho"
+  },
+  {
+   "tipo": "dialogo",
+   "tag": "CONVERSA",
+   "quem_a": "Muita gente diz",
+   "fala_a": "Dor nas costas é desgaste, não tem jeito.",
+   "quem_b": "A ciência diz",
+   "fala_b": "Na maioria dos casos **a dor melhora** com movimento, força e informação certa.",
+   "texto": "Exames mostram alterações em muita gente sem dor; imagem sozinha não explica o sintoma.",
+   "disposicao": "centro",
+   "fundo": "claro"
+  },
+  {
+   "tipo": "numeros",
+   "tag": "NA PRÁTICA",
+   "tipografia": "serifa",
+   "tamanho": 26,
+   "titulo": "Três passos para começar",
+   "itens": [
+    {
+     "titulo": "Dosar",
+     "texto": "Comece leve e suba aos poucos."
+    },
+    {
+     "titulo": "Fortalecer",
+     "texto": "Duas vezes por semana já ajuda."
+    },
+    {
+     "titulo": "Observar",
+     "texto": "A dor orienta o ritmo."
+    }
+   ],
+   "texto": "Se a dor persistir por semanas ou vier com fraqueza, febre ou perda de peso, procure avaliação.",
+   "fundo": "marinho"
+  },
+  {
+   "tipo": "linha_do_tempo",
+   "tag": "EVOLUÇÃO",
+   "titulo": "Como costuma evoluir",
+   "itens": [
+    {
+     "marco": "SEMANAS 0-2",
+     "titulo": "Reduzir a irritação",
+     "texto": "Manter-se ativo, ajustar a carga e evitar longos períodos parado."
+    },
+    {
+     "marco": "SEMANAS 3-6",
+     "titulo": "Ganhar capacidade",
+     "texto": "Força e mobilidade progressivas, com exercícios orientados."
+    },
+    {
+     "marco": "SEMANA 7+",
+     "titulo": "Voltar ao que gosta",
+     "texto": "Retorno gradual ao esporte e ao trabalho, com plano de manutenção."
+    }
+   ],
+   "fundo": "claro"
+  },
+  {
+   "tipo": "manchete",
+   "tag": "VIRADA",
+   "tipografia": "serifa",
+   "tamanho": 40,
+   "titulo": "Menos medo, **mais movimento.**",
+   "texto": "Informação de qualidade é parte do tratamento.",
+   "rasgado": {
+    "lado": "topo",
+    "cor": "#6B7775",
+    "tamanho": 70,
+    "seed": 9
+   },
+   "disposicao": "centro",
+   "fundo": "areia",
+   "modelo": {
+    "ilustracao": "joelho",
+    "x": 60,
+    "y": 300,
+    "w": 300,
+    "h": 210,
+    "escala": 0.7,
+    "ox": -60,
+    "oy": -60
+   }
+  },
+  {
+   "tipo": "cta",
+   "titulo": "Salve para consultar depois.",
+   "texto": "E mande para quem precisa ouvir isso.",
+   "referencias": "Demo de design"
+  }
+ ]
+}

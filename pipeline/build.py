@@ -27,11 +27,11 @@ DARK_BG = "#111718"
 GRAY = "#6B7775"
 INK = "#111718"
 # Cores complementares (combinam com o verde-água; usar com moderação, quando o tema pedir)
-CORAL = "#E07A5F"      # terracota: "mito", "erro", alerta
-AREIA = "#EFE6D8"      # fundo claro quente
-AREIA_BORDA = "#E2D6C2"
-MARINHO = "#14243B"    # fundo escuro frio
-OCRE = "#E9B44C"       # destaque quente pontual
+CORAL = "#6B7775"      # grafite da logo: "mito", "erro", alerta (sem terracota)
+AREIA = "#E3EDEB"      # névoa verde-água (fundo claro frio)
+AREIA_BORDA = "#CFDDDA"
+MARINHO = "#152A2B"    # petróleo escuro (verde-água muito escuro)
+OCRE = "#A6DDD5"       # verde-água claro (destaque pontual)
 HANDLE = "@lucaslino.fisio"
 NOME = "Lucas Lino"
 AVATAR = "data:image/jpeg;base64," + base64.b64encode((ROOT / "assets/avatar.jpg").read_bytes()).decode()
@@ -75,11 +75,11 @@ FONTS = "".join(_font(w, f) for w, f in [(300, "Poppins-Light.ttf"), (400, "Popp
 def pal(light):
     if light == "areia":
         c = pal(True); c.update(bg=f"background:{AREIA};", line=AREIA_BORDA, box_bg="#FBF7F1", box_border=AREIA_BORDA,
-                                pill=f"background:rgba(224,122,95,0.14);color:#A4452D;", mode="light", base=AREIA)
+                                pill=f"background:rgba(43,126,115,0.14);color:{BD};", mode="light", base=AREIA)
         return c
     if light == "marinho":
-        c = pal(False); c.update(bg=f"background:radial-gradient(120% 90% at 0% 100%, #1F3A5C 0%, {MARINHO} 60%);",
-                                 box_bg="rgba(255,255,255,0.06)", pill=f"background:rgba(233,180,76,0.16);color:{OCRE};", mode="dark", base=MARINHO)
+        c = pal(False); c.update(bg=f"background:radial-gradient(120% 90% at 0% 100%, #24474A 0%, {MARINHO} 60%);",
+                                 box_bg="rgba(255,255,255,0.06)", pill=f"background:rgba(166,221,213,0.16);color:{OCRE};", mode="dark", base=MARINHO)
         return c
     if light == "teal":
         return dict(bg=f"background:linear-gradient(160deg, #23685F 0%, {BD} 55%, #3E9A8E 100%);", title="#fff",
@@ -200,7 +200,7 @@ def painel_vidro(inner, c, extra=""):
     return (f'<div style="background:{bg};border:1px solid {br};border-radius:16px;backdrop-filter:blur(8px);'
             f'box-shadow:0 10px 28px rgba(0,0,0,{0.08 if c["mode"]=="light" else 0.28});padding:16px 18px;{extra}">{inner}</div>')
 
-def panoramica(spec, i, total):
+def panoramica(spec, i, total, c=None):
     """Elementos que atravessam a divisa entre o slide N e o N+1.
     Em spec: "panoramicas": [{"de": 2, "tipo": "palavra"|"fita"|"seta", "texto": "FORÇA", ...}] (de = nº do slide, base 1)."""
     out = ""
@@ -218,11 +218,44 @@ def panoramica(spec, i, total):
             el = (f'<svg style="position:absolute;left:0;top:0" width="840" height="525" viewBox="0 0 840 525"><path d="M-10 {y+60} C 200 {y-90}, 330 {y+190}, 420 {y+40} S 640 {y-120}, 850 {y+30}" '
                   f'fill="none" stroke="{cor}" stroke-width="{p.get("espessura", 14)}" stroke-linecap="round" opacity=".9"/>'
                   f'<path d="M-10 {y+60} C 200 {y-90}, 330 {y+190}, 420 {y+40} S 640 {y-120}, 850 {y+30}" fill="none" stroke="#fff" stroke-opacity=".35" stroke-width="2" stroke-linecap="round" transform="translate(0,-4)"/></svg>')
+        elif p["tipo"] == "arte":  # modelo 3D que atravessa a divisa (a mesma peça aparece nos dois slides)
+            mod = importlib.import_module("ilustracoes." + p["ilustracao"])
+            bgc = c.get("base", LIGHT_BG) if c else LIGHT_BG
+            el = (f'<div style="position:absolute;left:{p.get("x", 105)}px;top:{p.get("y", -40)}px;width:420px;height:525px;transform:scale({p.get("escala", 1.5)});transform-origin:0 0;'
+                  f'-webkit-mask-image:radial-gradient(closest-side,#000 70%,transparent 100%);mask-image:radial-gradient(closest-side,#000 70%,transparent 100%);">{mod.cover_svg(B, BD, bgc)}</div>')
         else:  # seta que cruza a divisa
             el = (f'<svg style="position:absolute;left:0;top:0" width="840" height="525" viewBox="0 0 840 525"><path d="M300 {y} L 520 {y}" stroke="{cor}" stroke-width="5" stroke-linecap="round"/>'
                   f'<path d="M495 {y-20} L 525 {y} L 495 {y+20}" fill="none" stroke="{cor}" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg>')
         out += f'<div style="position:absolute;left:{off}px;top:0;width:840px;height:525px;z-index:3;pointer-events:none;">{el}</div>'
     return out
+
+
+def fio_continuo(spec, i, total, c):
+    """Fio verde-água único que percorre TODOS os slides (ondulando), com nó na divisa: dá continuidade."""
+    f = spec.get("fio")
+    if not f:
+        return ""
+    import math
+    y0, amp, per = f.get("y", 470), f.get("amp", 14), f.get("periodo", 280)
+    cor = f.get("cor", B if c["mode"] != "light" else BD)
+    pts = [(x, y0 + amp * math.sin(x / per * 2 * math.pi)) for x in range(i * 420 - 30, (i + 1) * 420 + 31, 10)]
+    d = "M" + " L".join(f"{x - i*420:.0f},{y:.1f}" for x, y in pts)
+    nos = ""
+    for k in (i, i + 1):
+        if 0 < k < total:
+            x = k * 420 - i * 420; y = y0 + amp * math.sin(k * 420 / per * 2 * math.pi)
+            nos += f'<circle cx="{x}" cy="{y:.1f}" r="7" fill="{cor}" opacity=".28"/><circle cx="{x}" cy="{y:.1f}" r="3.5" fill="{cor}"/>'
+    return (f'<svg style="position:absolute;left:0;top:0;z-index:3;pointer-events:none" width="420" height="525" viewBox="0 0 420 525">'
+            f'<path d="{d}" fill="none" stroke="{cor}" stroke-width="2.4" stroke-linecap="round" opacity=".75"/>{nos}</svg>')
+
+def modelo_inset(m, c):
+    """Modelo 3D menor, como ilustração de apoio em qualquer slide (m: ilustracao, x, y, escala, w, h)."""
+    mod = importlib.import_module("ilustracoes." + m["ilustracao"])
+    bgc = c.get("base", LIGHT_BG)
+    w, h = m.get("w", 220), m.get("h", 220)
+    return (f'<div style="position:absolute;left:{m.get("x", 200)}px;top:{m.get("y", 40)}px;width:{w}px;height:{h}px;overflow:hidden;z-index:3;pointer-events:none;'
+            f'-webkit-mask-image:radial-gradient(closest-side,#000 62%,transparent 100%);mask-image:radial-gradient(closest-side,#000 62%,transparent 100%);">'
+            f'<div style="position:absolute;left:{m.get("ox", 0)}px;top:{m.get("oy", 0)}px;width:420px;height:525px;transform:scale({m.get("escala", .6)});transform-origin:0 0;">{mod.cover_svg(B, BD, bgc)}</div></div>')
 
 # ---------------- Componentes fixos ----------------
 def progress_bar(i, total, c, fill=None):
@@ -372,7 +405,7 @@ def s_comparacao(s, c):
         return (f'<div style="flex:1;padding:14px 12px;border-radius:14px;background:{fundo};">'
                 f'<div style="font-size:9.5px;font-weight:700;letter-spacing:2px;color:{cor};margin-bottom:8px;">{lado["rotulo"]}</div>{itens}</div>')
         
-    esq = col(s["esquerda"], CORAL, _xicon, "rgba(224,122,95,0.10)")
+    esq = col(s["esquerda"], CORAL, _xicon, "rgba(107,119,117,0.12)")
     dir_ = col(s["direita"], BD if c["mode"] == "light" else B, _vicon, "rgba(108,195,183,0.14)")
     return top_bar(c, s.get("tag", "")) + body_wrap(
         label(s.get("rotulo"), c) + h2(s["titulo"], c, 25, 16) +
@@ -466,7 +499,9 @@ def s_cartoes(s, c):
         cards += painel_vidro(
             f'<div style="display:flex;align-items:center;gap:14px;"><div style="width:34px;height:34px;border-radius:50%;background:{c["icon_bg"]};display:flex;align-items:center;justify-content:center;flex:none;">{icon(ic, c["accent"], 18)}</div>'
             f'<div><div style="font-size:14px;font-weight:700;color:{c["title"]};line-height:1.2;">{md(it["titulo"], c)}</div>'
-            + (f'<div style="font-size:11.5px;color:{c["text"]};margin-top:3px;line-height:1.4;">{md_strong(it["texto"], c)}</div>' if it.get("texto") else "") + '</div></div>',
+            + (f'<div style="font-size:11.5px;color:{c["text"]};margin-top:3px;line-height:1.4;">{md_strong(it["texto"], c)}</div>' if it.get("texto") else "") + '</div>'
+            + (f'<div style="margin-left:auto;text-align:right;flex:none;"><div style="font-family:{FONT_IMPACTO};font-size:24px;line-height:1;color:{c["accent"]};">{it["chip"]}</div>'
+               f'<div style="font-size:8.5px;letter-spacing:1px;color:{c["muted"]};margin-top:2px;">{it.get("chip_texto","")}</div></div>' if it.get("chip") else "") + '</div>',
             c, "margin-top:10px;width:100%;" + (f"margin-left:{(k%2)*14}px;" if s.get("escada", True) else ""))
     return top_bar(c, s.get("tag", "")) + body_wrap(
         label(s.get("rotulo"), c) + f'<h2 style="{_fonte_css(s.get("tipografia"), s.get("tamanho", 28))}color:{c["title"]};">{md(s["titulo"], c)}</h2>' + cards + source(s.get("fonte_ref"), c))
@@ -557,7 +592,10 @@ def build_html(spec):
                 extras += papel_rasgado(r.get("lado", "base"), r.get("cor", CORAL), r.get("tamanho", 130), r.get("seed", i + 1), c)
             if s.get("palavra_fundo"):
                 extras += palavra_fundo(**s["palavra_fundo"], c=c) if isinstance(s["palavra_fundo"], dict) else palavra_fundo(s["palavra_fundo"], c)
-            extras += panoramica(spec, i, total)
+            extras += panoramica(spec, i, total, c)
+            if s.get("modelo"):
+                extras += modelo_inset(s["modelo"], c)
+            extras += fio_continuo(spec, i, total, c)
             inner = (decor(spec.get("estilo", "alternado"), i, c) + extras + TIPOS[s["tipo"]](s, c) +
                      progress_bar(i, total, c, c["fill"] if c["mode"] == "teal" else None) + ("" if last else swipe_arrow(c)))
         out.append(f'<div class="slide" style="{bg}">{inner}</div>')
