@@ -516,15 +516,16 @@ def s_grade(s, c):
         f'<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">{cards}</div>' + source(s.get("fonte"), c))
 
 def s_linha_do_tempo(s, c):
+    g = bool(s.get("preencher"))   # preencher: tipografia maior, para o conteúdo ocupar o espaço sem buracos
     """Linha do tempo vertical (fases, semanas, progressão)."""
     lc = B if c["mode"] != "teal" else "#fff"
     rows = "".join(f'<div style="display:flex;gap:14px;position:relative;padding-bottom:14px;">'
                    f'<div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0;width:14px;">'
                    f'<div style="width:12px;height:12px;border-radius:50%;background:{lc};box-shadow:0 0 0 4px rgba(108,195,183,0.2);margin-top:3px"></div>'
                    + (f'<div style="flex:1;width:2px;background:{c["line"]};margin-top:4px"></div>' if k < len(s["itens"]) - 1 else "") +
-                   f'</div><div style="text-align:left"><div style="font-size:9.5px;font-weight:700;letter-spacing:2px;color:{c["accent"]}">{it.get("marco","")}</div>'
-                   f'<div style="font-size:14px;font-weight:700;color:{c["strong"]};line-height:1.25;margin-top:2px">{it["titulo"]}</div>'
-                   f'<div style="font-size:11.5px;color:{c["text"]};line-height:1.4;margin-top:2px">{it.get("texto","")}</div></div></div>'
+                   f'</div><div style="text-align:left"><div style="font-size:{11 if g else 9.5}px;font-weight:700;letter-spacing:2px;color:{c["accent"]}">{it.get("marco","")}</div>'
+                   f'<div style="font-size:{20 if g else 14}px;font-weight:700;color:{c["strong"]};line-height:1.2;margin-top:3px">{it["titulo"]}</div>'
+                   f'<div style="font-size:{14 if g else 11.5}px;color:{c["text"]};line-height:1.4;margin-top:3px">{it.get("texto","")}</div></div></div>'
                    for k, it in enumerate(s["itens"]))
     if s.get("preencher"):
         rows = f'<div style="flex:1;display:flex;flex-direction:column;justify-content:space-between;width:100%;padding-bottom:4px;">{rows}</div>'
@@ -610,9 +611,9 @@ def s_numeros(s, c):
     cols = ""
     for k, it in enumerate(s["itens"]):
         cols += (f'<div style="flex:1;position:relative;padding:34px 8px 8px;">'
-                 f'<div style="position:absolute;left:0;top:-6px;font-family:{FONT_IMPACTO};font-weight:700;font-size:78px;line-height:1;color:{ghost};">{k+1:02d}</div>'
-                 f'<div style="position:relative;font-size:12.5px;font-weight:700;color:{c["title"]};line-height:1.25;">{md(it["titulo"], c)}</div>'
-                 f'<div style="position:relative;font-size:10.5px;color:{c["text"]};margin-top:5px;line-height:1.4;">{md_strong(it.get("texto",""), c)}</div></div>')
+                 f'<div style="position:absolute;left:0;top:-6px;font-family:{FONT_IMPACTO};font-weight:700;font-size:{96 if s.get("preencher") else 78}px;line-height:1;color:{ghost};">{k+1:02d}</div>'
+                 f'<div style="position:relative;font-size:{16 if s.get("preencher") else 12.5}px;font-weight:700;color:{c["title"]};line-height:1.2;margin-top:{26 if s.get("preencher") else 0}px;">{md(it["titulo"], c)}</div>'
+                 f'<div style="position:relative;font-size:{12.5 if s.get("preencher") else 10.5}px;color:{c["text"]};margin-top:6px;line-height:1.4;">{md_strong(it.get("texto",""), c)}</div></div>')
     if s.get("preencher"):
         faixa = painel_vidro(f'<div style="display:flex;gap:6px;height:100%;align-items:center;">{cols}</div>', c, "padding:14px 12px 12px;margin-top:16px;flex:1;width:100%;")
     else:
@@ -733,7 +734,7 @@ def build_html(spec):
             modo = s.get("fundo") or modo_do_estilo(spec.get("estilo", "alternado"), i)
             _ALINHAR["v"] = s.get("disposicao", "base")
             _ALINHAR["centro_texto"] = s.get("disposicao") == "centro"
-            _ALINHAR["reservar"] = s.get("reservar_topo", 0)
+            _ALINHAR["reservar"] = s.get("reservar_topo", 70 if s.get("preencher") else 0)
             c = pal({"claro": True, "escuro": False, "verde": "teal", "areia": "areia", "marinho": "marinho"}[modo])
             bg = c["bg"]
             extras = ""
