@@ -24,6 +24,8 @@ Status: `pendente` → `rascunho` (gerado, aguardando aprovação) → `aprovado
 9. Envie ao Lucas as imagens (SendUserFile) e a legenda (SendUserMessage) e peça aprovação. Ajuste o que ele pedir e reenvie. Ao aprovar: status `aprovado`, commit, push.
 
 ## Design: nunca repetir o estilo (pedido do Lucas)
+> **ATENÇÃO (26/11/2026, 15h11): o Lucas reprovou o último teste visual ("ficou péssimo"): faixas largas de papel rasgado atrás das esferas, `costura`, `pontes` com faixa e preenchimento forçado dos cards estão SUSPENSOS. Não use `costura`, `"faixa"` em `pontes`, `rasgo_h`/`rasgo_v` nem `reservar_topo` com `preencher` nos carrosséis da semana. O último visual que o Lucas elogiou ("melhorou") foi o teste 3: paleta da logo, `fio` duplo, esferas 3D nas divisas SEM faixa, cards com chip. Aguarde a aprovação do Lucas antes de reativar qualquer item suspenso. Antes de gerar os rascunhos da semana, mostre a ele uma amostra de 3 slides e só siga com a direção aprovada.**
+
 O Lucas não quer feed monótono: **cada carrossel precisa ter um design diferente do anterior**, sempre com a mesma paleta e a logo.
 - Na spec, escolha `"estilo"`: `alternado`, `escuro`, `claro`, `blocos` ou `verde` (ver `ESTILOS` em `pipeline/build.py`), e na capa `"layout"`: `base` (manchete embaixo) ou `topo` (manchete em cima, arte embaixo). Um slide pode forçar o fundo com `"fundo": "claro" | "escuro" | "verde"`.
 - Consulte em `fila.json` o `estilo` e o `layout` dos últimos posts e **não repita a combinação dos 2 anteriores**. Grave `"estilo"` e `"layout"` no item da fila ao gerar.
