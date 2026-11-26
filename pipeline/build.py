@@ -200,11 +200,24 @@ def painel_vidro(inner, c, extra=""):
     return (f'<div style="background:{bg};border:1px solid {br};border-radius:16px;backdrop-filter:blur(8px);'
             f'box-shadow:0 10px 28px rgba(0,0,0,{0.08 if c["mode"]=="light" else 0.28});padding:16px 18px;{extra}">{inner}</div>')
 
+def _pontes_auto(spec, total):
+    cfg = spec.get("pontes")
+    if not cfg:
+        return []
+    mods = cfg["modelos"]; ys = cfg.get("y", [140, 380]); pulos = set(cfg.get("pular", []))
+    out = []
+    for k in range(1, total - 1):                # divisa entre o slide k e o k+1 (base 1); não liga o CTA
+        if k in pulos:
+            continue
+        out.append({"de": k, "tipo": "bolha", "ilustracao": mods[(k - 1) % len(mods)], "y": ys[(k - 1) % len(ys)],
+                    "raio": cfg.get("raio", 74), "escala": cfg.get("escala", 0.6), "ox": cfg.get("ox", 0), "oy": cfg.get("oy", 0)})
+    return out
+
 def panoramica(spec, i, total, c=None):
     """Elementos que atravessam a divisa entre o slide N e o N+1.
     Em spec: "panoramicas": [{"de": 2, "tipo": "palavra"|"fita"|"seta", "texto": "FORÇA", ...}] (de = nº do slide, base 1)."""
     out = ""
-    for p in spec.get("panoramicas", []):
+    for p in list(spec.get("panoramicas", [])) + _pontes_auto(spec, total):
         a = p["de"] - 1
         if i not in (a, a + 1):
             continue
@@ -223,6 +236,20 @@ def panoramica(spec, i, total, c=None):
             bgc = c.get("base", LIGHT_BG) if c else LIGHT_BG
             el = (f'<div style="position:absolute;left:{p.get("x", 105)}px;top:{p.get("y", -40)}px;width:420px;height:525px;transform:scale({p.get("escala", 1.5)});transform-origin:0 0;'
                   f'-webkit-mask-image:radial-gradient(closest-side,#000 70%,transparent 100%);mask-image:radial-gradient(closest-side,#000 70%,transparent 100%);">{mod.cover_svg(B, BD, bgc)}</div>')
+        elif p["tipo"] == "bolha":  # esfera de vidro com modelo 3D, metade em cada slide (ponte entre páginas)
+            mod = importlib.import_module("ilustracoes." + p["ilustracao"])
+            bgc = c.get("base", LIGHT_BG) if c else LIGHT_BG
+            r = p.get("raio", 78); cx = 420; cy = y
+            esc = p.get("escala", 0.62)
+            cid = f"bol{a}{i}"
+            el = (f'<svg style="position:absolute;left:0;top:0" width="840" height="525" viewBox="0 0 840 525"><defs>'
+                  f'<clipPath id="{cid}"><circle cx="{cx}" cy="{cy}" r="{r}"/></clipPath>'
+                  f'<radialGradient id="{cid}g" cx="35%" cy="30%"><stop offset="0" stop-color="#fff" stop-opacity=".55"/><stop offset=".55" stop-color="#fff" stop-opacity=".08"/><stop offset="1" stop-color="{cor}" stop-opacity=".18"/></radialGradient>'
+                  f'<filter id="{cid}s" x="-30%" y="-30%" width="160%" height="170%"><feDropShadow dx="0" dy="10" stdDeviation="9" flood-color="#000" flood-opacity=".25"/></filter></defs>'
+                  f'<circle cx="{cx}" cy="{cy}" r="{r+16}" fill="none" stroke="{cor}" stroke-width="1.4" stroke-dasharray="3 6" opacity=".7"/>'
+                  f'<circle cx="{cx}" cy="{cy}" r="{r}" fill="{bgc}" filter="url(#{cid}s)"/>'
+                  f'<foreignObject x="0" y="0" width="840" height="525" clip-path="url(#{cid})"><div xmlns="http://www.w3.org/1999/xhtml" style="position:absolute;left:{cx - r + p.get("ox", 0)}px;top:{cy - r + p.get("oy", 0)}px;width:420px;height:525px;transform:scale({esc});transform-origin:0 0;">{mod.cover_svg(B, BD, bgc)}</div></foreignObject>'
+                  f'<circle cx="{cx}" cy="{cy}" r="{r}" fill="url(#{cid}g)"/><circle cx="{cx}" cy="{cy}" r="{r}" fill="none" stroke="{cor}" stroke-width="3"/></svg>')
         else:  # seta que cruza a divisa
             el = (f'<svg style="position:absolute;left:0;top:0" width="840" height="525" viewBox="0 0 840 525"><path d="M300 {y} L 520 {y}" stroke="{cor}" stroke-width="5" stroke-linecap="round"/>'
                   f'<path d="M495 {y-20} L 525 {y} L 495 {y+20}" fill="none" stroke="{cor}" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg>')
@@ -240,13 +267,19 @@ def fio_continuo(spec, i, total, c):
     cor = f.get("cor", B if c["mode"] != "light" else BD)
     pts = [(x, y0 + amp * math.sin(x / per * 2 * math.pi)) for x in range(i * 420 - 30, (i + 1) * 420 + 31, 10)]
     d = "M" + " L".join(f"{x - i*420:.0f},{y:.1f}" for x, y in pts)
+    if f.get("duplo"):
+        pts2 = [(x, y0 + amp * math.sin(x / per * 2 * math.pi + math.pi)) for x in range(i * 420 - 30, (i + 1) * 420 + 31, 10)]
+        d2 = "M" + " L".join(f"{x - i*420:.0f},{y:.1f}" for x, y in pts2)
+        extra_path = f'<path d="{d2}" fill="none" stroke="{cor}" stroke-width="{f.get("espessura", 2.4)*.8}" stroke-linecap="round" opacity=".4"/>'
+    else:
+        extra_path = ""
     nos = ""
     for k in (i, i + 1):
         if 0 < k < total:
             x = k * 420 - i * 420; y = y0 + amp * math.sin(k * 420 / per * 2 * math.pi)
             nos += f'<circle cx="{x}" cy="{y:.1f}" r="7" fill="{cor}" opacity=".28"/><circle cx="{x}" cy="{y:.1f}" r="3.5" fill="{cor}"/>'
     return (f'<svg style="position:absolute;left:0;top:0;z-index:3;pointer-events:none" width="420" height="525" viewBox="0 0 420 525">'
-            f'<path d="{d}" fill="none" stroke="{cor}" stroke-width="2.4" stroke-linecap="round" opacity=".75"/>{nos}</svg>')
+            f'{extra_path}<path d="{d}" fill="none" stroke="{cor}" stroke-width="{f.get("espessura", 2.4)}" stroke-linecap="round" opacity=".8"/>{nos}</svg>')
 
 def modelo_inset(m, c):
     """Modelo 3D menor, como ilustração de apoio em qualquer slide (m: ilustracao, x, y, escala, w, h)."""
@@ -256,6 +289,24 @@ def modelo_inset(m, c):
     return (f'<div style="position:absolute;left:{m.get("x", 200)}px;top:{m.get("y", 40)}px;width:{w}px;height:{h}px;overflow:hidden;z-index:3;pointer-events:none;'
             f'-webkit-mask-image:radial-gradient(closest-side,#000 62%,transparent 100%);mask-image:radial-gradient(closest-side,#000 62%,transparent 100%);">'
             f'<div style="position:absolute;left:{m.get("ox", 0)}px;top:{m.get("oy", 0)}px;width:420px;height:525px;transform:scale({m.get("escala", .6)});transform-origin:0 0;">{mod.cover_svg(B, BD, bgc)}</div></div>')
+
+
+def _mesclar(h1, h2, t=.5):
+    a = [int(h1[k:k+2], 16) for k in (1, 3, 5)]; b = [int(h2[k:k+2], 16) for k in (1, 3, 5)]
+    return "#%02x%02x%02x" % tuple(round(a[k] + (b[k] - a[k]) * t) for k in range(3))
+
+def costura_bordas(bases, i):
+    """Faixas nas bordas: a direita do slide i e a esquerda do i+1 convergem para a mesma cor intermediária,
+    então ao arrastar o fundo parece contínuo."""
+    out = ""
+    larg = 90
+    if i < len(bases) - 1:
+        m = _mesclar(bases[i], bases[i + 1])
+        out += f'<div style="position:absolute;top:0;bottom:0;right:0;width:{larg}px;background:linear-gradient(to right,rgba(0,0,0,0),{m});z-index:1;pointer-events:none;"></div>'
+    if i > 0:
+        m = _mesclar(bases[i - 1], bases[i])
+        out += f'<div style="position:absolute;top:0;bottom:0;left:0;width:{larg}px;background:linear-gradient(to left,rgba(0,0,0,0),{m});z-index:1;pointer-events:none;"></div>'
+    return out
 
 # ---------------- Componentes fixos ----------------
 def progress_bar(i, total, c, fill=None):
@@ -572,6 +623,13 @@ def build_html(spec):
     slides = spec["slides"]
     total = len(slides)
     out = []
+    _mapa = {"claro": True, "escuro": False, "verde": "teal", "areia": "areia", "marinho": "marinho"}
+    bases = []
+    for k, sk in enumerate(slides):
+        if sk["tipo"] == "cta":
+            bases.append("#2B7E73")
+        else:
+            bases.append(pal(_mapa[sk.get("fundo") or modo_do_estilo(spec.get("estilo", "alternado"), k)])["base"])
     for i, s in enumerate(slides):
         last = i == total - 1
         if s["tipo"] == "cta":
@@ -596,6 +654,8 @@ def build_html(spec):
             if s.get("modelo"):
                 extras += modelo_inset(s["modelo"], c)
             extras += fio_continuo(spec, i, total, c)
+            if spec.get("costura"):
+                extras += costura_bordas(bases, i)
             inner = (decor(spec.get("estilo", "alternado"), i, c) + extras + TIPOS[s["tipo"]](s, c) +
                      progress_bar(i, total, c, c["fill"] if c["mode"] == "teal" else None) + ("" if last else swipe_arrow(c)))
         out.append(f'<div class="slide" style="{bg}">{inner}</div>')

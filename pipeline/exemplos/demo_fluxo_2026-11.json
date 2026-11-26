@@ -1,0 +1,14 @@
+{"titulo":"Teste visual 3","estilo":"editorial","textura":true,"costura":true,
+ "fio":{"y":481,"amp":7,"periodo":280,"duplo":true,"espessura":2.6},
+ "pontes":{"modelos":["coluna","disco_lombar","braco","aquiles"],"y":[112],"raio":56,"escala":0.5,"ox":-30,"oy":-20,"pular":[1,6]},
+ "slides":[
+ {"tipo":"capa","ilustracao":"coluna","layout":"base","tipografia":"serifa","tamanho":34,"tag":"DEMO · FLUXO","titulo":"Sua dor não é ==fraqueza==: é um sinal","subtitulo":"O que a fisioterapia baseada em evidências diz, **em 6 passos**."},
+ {"tipo":"cartoes","tag":"O QUE ENTRA","tipografia":"impacto","tamanho":28,"titulo":"O que os estudos **avaliam**","escada":false,
+  "itens":[{"titulo":"Carga progressiva","texto":"Aumento gradual de volume e intensidade, com margem para recuperar entre as sessões.","chip":"3x","chip_texto":"POR SEMANA","icone":"carga"},
+           {"titulo":"Movimento sem medo","texto":"Manter-se ativo costuma funcionar melhor do que repouso prolongado em dores comuns.","chip":"+","chip_texto":"ATIVIDADE","icone":"check"}],"fundo":"claro","disposicao":"base"},
+ {"tipo":"dialogo","tag":"CONVERSA","quem_a":"Muita gente diz","fala_a":"Dor nas costas é desgaste, não tem jeito.","quem_b":"A ciência diz","fala_b":"Na maioria dos casos **a dor melhora** com movimento, força e informação certa.","texto":"Exames mostram alterações em muita gente sem dor.","fundo":"marinho","disposicao":"base"},
+ {"tipo":"numeros","tag":"NA PRÁTICA","tipografia":"serifa","tamanho":26,"titulo":"Três passos para começar","itens":[{"titulo":"Dosar","texto":"Comece leve e suba aos poucos."},{"titulo":"Fortalecer","texto":"Duas vezes por semana já ajuda."},{"titulo":"Observar","texto":"A dor orienta o ritmo."}],"texto":"Dor que persiste por semanas merece avaliação.","fundo":"claro","disposicao":"base"},
+ {"tipo":"linha_do_tempo","tag":"EVOLUÇÃO","titulo":"Como costuma evoluir","itens":[{"marco":"SEMANAS 0-2","titulo":"Reduzir a irritação","texto":"Manter-se ativo e ajustar a carga."},{"marco":"SEMANAS 3-6","titulo":"Ganhar capacidade","texto":"Força e mobilidade progressivas."}],"fundo":"escuro","disposicao":"base"},
+ {"tipo":"manchete","tag":"VIRADA","tipografia":"serifa","tamanho":40,"titulo":"Menos medo, **mais movimento.**","texto":"Informação de qualidade é parte do tratamento.","disposicao":"base","fundo":"areia"},
+ {"tipo":"cta","titulo":"Salve para consultar depois.","texto":"E mande para quem precisa ouvir isso.","referencias":"Demo de design"}
+ ]}
