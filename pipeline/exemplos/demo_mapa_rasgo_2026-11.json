@@ -1,0 +1,205 @@
+{
+ "titulo": "Teste visual 4",
+ "estilo": "editorial",
+ "textura": true,
+ "costura": true,
+ "fio": {
+  "y": 481,
+  "amp": 7,
+  "periodo": 280,
+  "duplo": true,
+  "espessura": 2.6
+ },
+ "pontes": {
+  "modelos": [
+   "disco_lombar",
+   "braco",
+   "aquiles",
+   "coluna"
+  ],
+  "y": [
+   128
+  ],
+  "raio": 50,
+  "escala": 0.5,
+  "ox": -30,
+  "oy": -20,
+  "pular": [
+   1,
+   6
+  ],
+  "espessura_faixa": 60
+ },
+ "panoramicas": [
+  {
+   "de": 5,
+   "tipo": "rasgo_v",
+   "cor": "#2B7E73",
+   "espessura": 56,
+   "seed": 21
+  }
+ ],
+ "slides": [
+  {
+   "tipo": "capa",
+   "ilustracao": "coluna",
+   "layout": "base",
+   "tipografia": "serifa",
+   "tamanho": 34,
+   "tag": "DEMO · MAPA MENTAL",
+   "titulo": "Sua dor não é ==fraqueza==: é um sinal",
+   "subtitulo": "O que a fisioterapia baseada em evidências diz, **em 6 passos**.",
+   "rasgado": {
+    "lado": "base",
+    "cor": "#2B7E73",
+    "tamanho": 64,
+    "seed": 4
+   }
+  },
+  {
+   "tipo": "cartoes",
+   "tag": "O QUE ENTRA",
+   "tipografia": "impacto",
+   "tamanho": 28,
+   "titulo": "O que os estudos **avaliam**",
+   "escada": false,
+   "preencher": true,
+   "reservar_topo": 176,
+   "itens": [
+    {
+     "titulo": "Carga progressiva",
+     "texto": "Aumento gradual de volume e intensidade, com recuperação.",
+     "chip": "3x",
+     "chip_texto": "POR SEMANA",
+     "icone": "carga"
+    },
+    {
+     "titulo": "Movimento sem medo",
+     "texto": "Manter-se ativo costuma ser melhor que repouso longo.",
+     "chip": "+",
+     "chip_texto": "ATIVIDADE",
+     "icone": "check"
+    },
+    {
+     "titulo": "Avaliação individual",
+     "texto": "A mesma dor pode ter causas diferentes.",
+     "chip": "1:1",
+     "chip_texto": "CADA CASO",
+     "icone": "livro"
+    }
+   ],
+   "fundo": "claro"
+  },
+  {
+   "tipo": "mapa_mental",
+   "tag": "MAPA MENTAL",
+   "tipografia": "serifa",
+   "tamanho": 24,
+   "titulo": "O que influencia a dor",
+   "reservar_topo": 176,
+   "altura": 250,
+   "centro": "DOR NAS COSTAS",
+   "centro_modelo": {
+    "ilustracao": "coluna",
+    "escala": 0.42,
+    "ox": -30,
+    "oy": -30
+   },
+   "itens": [
+    {
+     "titulo": "Sono",
+     "texto": "Dormir mal aumenta a sensibilidade.",
+     "icone": "lua"
+    },
+    {
+     "titulo": "Estresse",
+     "texto": "Tensão mantida eleva a dor.",
+     "icone": "carga"
+    },
+    {
+     "titulo": "Força",
+     "texto": "Músculos fortes dividem a carga.",
+     "icone": "check"
+    },
+    {
+     "titulo": "Movimento",
+     "texto": "Ficar parado por horas piora.",
+     "icone": "cadeira"
+    }
+   ],
+   "fundo": "marinho"
+  },
+  {
+   "tipo": "numeros",
+   "tag": "NA PRÁTICA",
+   "tipografia": "serifa",
+   "tamanho": 26,
+   "titulo": "Três passos para começar",
+   "preencher": true,
+   "reservar_topo": 176,
+   "itens": [
+    {
+     "titulo": "Dosar",
+     "texto": "Comece leve e suba aos poucos, sem saltos grandes de carga."
+    },
+    {
+     "titulo": "Fortalecer",
+     "texto": "Duas vezes por semana já ajuda a proteger a região."
+    },
+    {
+     "titulo": "Observar",
+     "texto": "A dor orienta o ritmo: use-a como guia, não como alarme."
+    }
+   ],
+   "texto": "Dor que persiste por semanas merece avaliação.",
+   "fundo": "claro"
+  },
+  {
+   "tipo": "linha_do_tempo",
+   "tag": "EVOLUÇÃO",
+   "titulo": "Como costuma evoluir",
+   "preencher": true,
+   "reservar_topo": 176,
+   "itens": [
+    {
+     "marco": "SEMANAS 0-2",
+     "titulo": "Reduzir a irritação",
+     "texto": "Manter-se ativo, ajustar a carga e evitar longos períodos parado."
+    },
+    {
+     "marco": "SEMANAS 3-6",
+     "titulo": "Ganhar capacidade",
+     "texto": "Força e mobilidade progressivas, com exercícios orientados."
+    },
+    {
+     "marco": "SEMANA 7+",
+     "titulo": "Voltar ao que gosta",
+     "texto": "Retorno gradual ao esporte e ao trabalho."
+    }
+   ],
+   "fundo": "escuro"
+  },
+  {
+   "tipo": "manchete",
+   "tag": "VIRADA",
+   "tipografia": "serifa",
+   "tamanho": 42,
+   "titulo": "Menos medo, **mais movimento.**",
+   "texto": "Informação de qualidade é parte do tratamento. Movimento, força e boas explicações andam juntos.",
+   "disposicao": "centro",
+   "fundo": "areia",
+   "rasgado": {
+    "lado": "topo",
+    "cor": "#2B7E73",
+    "tamanho": 44,
+    "seed": 9
+   }
+  },
+  {
+   "tipo": "cta",
+   "titulo": "Salve para consultar depois.",
+   "texto": "E mande para quem precisa ouvir isso.",
+   "referencias": "Demo de design"
+  }
+ ]
+}

@@ -209,6 +209,10 @@ def _pontes_auto(spec, total):
     for k in range(1, total - 1):                # divisa entre o slide k e o k+1 (base 1); não liga o CTA
         if k in pulos:
             continue
+        if cfg.get("faixa", True):
+            cores = cfg.get("cores_faixa", [BD, "#3E9A8E", "#1E5F57"])
+            out.append({"de": k, "tipo": "rasgo_h", "y": ys[(k - 1) % len(ys)], "espessura": cfg.get("espessura_faixa", 128),
+                        "cor": cores[(k - 1) % len(cores)], "seed": 11 + k})
         out.append({"de": k, "tipo": "bolha", "ilustracao": mods[(k - 1) % len(mods)], "y": ys[(k - 1) % len(ys)],
                     "raio": cfg.get("raio", 74), "escala": cfg.get("escala", 0.6), "ox": cfg.get("ox", 0), "oy": cfg.get("oy", 0)})
     return out
@@ -250,12 +254,47 @@ def panoramica(spec, i, total, c=None):
                   f'<circle cx="{cx}" cy="{cy}" r="{r}" fill="{bgc}" filter="url(#{cid}s)"/>'
                   f'<foreignObject x="0" y="0" width="840" height="525" clip-path="url(#{cid})"><div xmlns="http://www.w3.org/1999/xhtml" style="position:absolute;left:{cx - r + p.get("ox", 0)}px;top:{cy - r + p.get("oy", 0)}px;width:420px;height:525px;transform:scale({esc});transform-origin:0 0;">{mod.cover_svg(B, BD, bgc)}</div></foreignObject>'
                   f'<circle cx="{cx}" cy="{cy}" r="{r}" fill="url(#{cid}g)"/><circle cx="{cx}" cy="{cy}" r="{r}" fill="none" stroke="{cor}" stroke-width="3"/></svg>')
+        elif p["tipo"] in ("rasgo_h", "rasgo_v"):
+            el = faixa_rasgada("h" if p["tipo"] == "rasgo_h" else "v", y if p["tipo"] == "rasgo_h" else 420, p.get("espessura", 120 if p["tipo"] == "rasgo_h" else 70),
+                               p.get("cor", BD), seed=p.get("seed", a + 3), opacidade=p.get("opacidade", .94))
         else:  # seta que cruza a divisa
             el = (f'<svg style="position:absolute;left:0;top:0" width="840" height="525" viewBox="0 0 840 525"><path d="M300 {y} L 520 {y}" stroke="{cor}" stroke-width="5" stroke-linecap="round"/>'
                   f'<path d="M495 {y-20} L 525 {y} L 495 {y+20}" fill="none" stroke="{cor}" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg>')
         out += f'<div style="position:absolute;left:{off}px;top:0;width:840px;height:525px;z-index:3;pointer-events:none;">{el}</div>'
     return out
 
+
+
+def faixa_rasgada(orient, centro, espessura, cor, seed=1, total=840, altura=525, opacidade=.94):
+    """Faixa de papel rasgado que atravessa a divisa. orient 'h': horizontal (y=centro, atravessa os 2 slides);
+    'v': vertical (x=centro, de cima a baixo). Bordas orgânicas por turbulência, borda branca e sombra."""
+    rnd = random.Random(seed)
+    L = total if orient == "h" else altura
+    def borda(off):
+        pts, t = [], -30
+        while t <= L + 30:
+            pts.append((t, off + rnd.uniform(-7, 7)))
+            t += rnd.uniform(40, 80)
+        return pts
+    a = borda(-espessura / 2); b = borda(espessura / 2)
+    def trilho(pts, rev=False):
+        pts = pts[::-1] if rev else pts
+        d = ""
+        for k, (t, o) in enumerate(pts):
+            d += (f"M" if k == 0 else " L") + (f"{t:.0f},{centro + o:.1f}" if orient == "h" else f"{centro + o:.1f},{t:.0f}")
+        return d
+    poligono = trilho(a) + " " + trilho(b, True).replace("M", "L", 1) + " Z"
+    fid = f"fr{seed}{orient}"
+    filtro = (f'<defs><filter id="{fid}" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency="0.04 0.1" numOctaves="4" seed="{seed}" result="n"/>'
+              f'<feDisplacementMap in="SourceGraphic" in2="n" scale="14"/></filter>'
+              f'<filter id="{fid}s" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency="0.05 0.12" numOctaves="3" seed="{seed+5}" result="n"/>'
+              f'<feDisplacementMap in="SourceGraphic" in2="n" scale="10" result="d"/><feGaussianBlur in="d" stdDeviation="3"/></filter></defs>')
+    # camada branca (miolo do papel) levemente maior, sombra e cor por cima
+    esp2 = espessura + 12
+    return (f'<svg style="position:absolute;left:0;top:0" width="{total if orient=="h" else 840}" height="{altura}" viewBox="0 0 {total if orient=="h" else 840} {altura}">{filtro}'
+            f'<g transform="translate(0,5)" filter="url(#{fid}s)" opacity=".3"><path d="{poligono}" fill="#000"/></g>'
+            f'<path d="{poligono}" fill="#F7F4EE" filter="url(#{fid})" transform="{"translate(0,-4)" if orient=="h" else "translate(-4,0)"}"/>'
+            f'<path d="{poligono}" fill="{cor}" opacity="{opacidade}" filter="url(#{fid})"/></svg>')
 
 def fio_continuo(spec, i, total, c):
     """Fio verde-água único que percorre TODOS os slides (ondulando), com nó na divisa: dá continuidade."""
@@ -293,13 +332,15 @@ def modelo_inset(m, c):
 
 def _mesclar(h1, h2, t=.5):
     a = [int(h1[k:k+2], 16) for k in (1, 3, 5)]; b = [int(h2[k:k+2], 16) for k in (1, 3, 5)]
-    return "#%02x%02x%02x" % tuple(round(a[k] + (b[k] - a[k]) * t) for k in range(3))
+    m = [a[k] + (b[k] - a[k]) * t for k in range(3)]
+    alvo = (0x2B, 0x7E, 0x73)                       # tinge o tom intermediário de verde-água (evita cinza sujo)
+    return "#%02x%02x%02x" % tuple(round(m[k] + (alvo[k] - m[k]) * .35) for k in range(3))
 
 def costura_bordas(bases, i):
     """Faixas nas bordas: a direita do slide i e a esquerda do i+1 convergem para a mesma cor intermediária,
     então ao arrastar o fundo parece contínuo."""
     out = ""
-    larg = 90
+    larg = 56
     if i < len(bases) - 1:
         m = _mesclar(bases[i], bases[i + 1])
         out += f'<div style="position:absolute;top:0;bottom:0;right:0;width:{larg}px;background:linear-gradient(to right,rgba(0,0,0,0),{m});z-index:1;pointer-events:none;"></div>'
@@ -347,6 +388,8 @@ _ALINHAR = {"v": "base", "centro_texto": False}
 def body_wrap(inner):
     v = DISPOSICAO.get(_ALINHAR["v"], "flex-end")
     top_pad = "72px" if v == "flex-start" else "0"
+    if _ALINHAR.get("reservar"):
+        v, top_pad = "flex-start", f"{_ALINHAR['reservar']}px"
     ta = "text-align:center;align-items:center;" if _ALINHAR["centro_texto"] else ""
     return f'<div style="position:absolute;inset:0;z-index:5;padding:{top_pad} 48px 60px 36px;display:flex;flex-direction:column;justify-content:{v};{ta}">{inner}</div>'
 
@@ -483,6 +526,8 @@ def s_linha_do_tempo(s, c):
                    f'<div style="font-size:14px;font-weight:700;color:{c["strong"]};line-height:1.25;margin-top:2px">{it["titulo"]}</div>'
                    f'<div style="font-size:11.5px;color:{c["text"]};line-height:1.4;margin-top:2px">{it.get("texto","")}</div></div></div>'
                    for k, it in enumerate(s["itens"]))
+    if s.get("preencher"):
+        rows = f'<div style="flex:1;display:flex;flex-direction:column;justify-content:space-between;width:100%;padding-bottom:4px;">{rows}</div>'
     return top_bar(c, s.get("tag", "")) + body_wrap(label(s.get("rotulo"), c) + h2(s["titulo"], c, 25, 16) + rows)
 
 def s_citacao(s, c):
@@ -553,7 +598,9 @@ def s_cartoes(s, c):
             + (f'<div style="font-size:11.5px;color:{c["text"]};margin-top:3px;line-height:1.4;">{md_strong(it["texto"], c)}</div>' if it.get("texto") else "") + '</div>'
             + (f'<div style="margin-left:auto;text-align:right;flex:none;"><div style="font-family:{FONT_IMPACTO};font-size:24px;line-height:1;color:{c["accent"]};">{it["chip"]}</div>'
                f'<div style="font-size:8.5px;letter-spacing:1px;color:{c["muted"]};margin-top:2px;">{it.get("chip_texto","")}</div></div>' if it.get("chip") else "") + '</div>',
-            c, "margin-top:10px;width:100%;" + (f"margin-left:{(k%2)*14}px;" if s.get("escada", True) else ""))
+            c, ("flex:1;display:flex;flex-direction:column;justify-content:center;width:100%;" if s.get("preencher") else "margin-top:10px;width:100%;") + (f"margin-left:{(k%2)*14}px;" if s.get("escada", True) else ""))
+    if s.get("preencher"):
+        cards = f'<div style="flex:1;display:flex;flex-direction:column;gap:10px;margin-top:12px;width:100%;">{cards}</div>'
     return top_bar(c, s.get("tag", "")) + body_wrap(
         label(s.get("rotulo"), c) + f'<h2 style="{_fonte_css(s.get("tipografia"), s.get("tamanho", 28))}color:{c["title"]};">{md(s["titulo"], c)}</h2>' + cards + source(s.get("fonte_ref"), c))
 
@@ -566,7 +613,10 @@ def s_numeros(s, c):
                  f'<div style="position:absolute;left:0;top:-6px;font-family:{FONT_IMPACTO};font-weight:700;font-size:78px;line-height:1;color:{ghost};">{k+1:02d}</div>'
                  f'<div style="position:relative;font-size:12.5px;font-weight:700;color:{c["title"]};line-height:1.25;">{md(it["titulo"], c)}</div>'
                  f'<div style="position:relative;font-size:10.5px;color:{c["text"]};margin-top:5px;line-height:1.4;">{md_strong(it.get("texto",""), c)}</div></div>')
-    faixa = painel_vidro(f'<div style="display:flex;gap:6px;">{cols}</div>', c, "padding:14px 12px 12px;margin-top:20px;")
+    if s.get("preencher"):
+        faixa = painel_vidro(f'<div style="display:flex;gap:6px;height:100%;align-items:center;">{cols}</div>', c, "padding:14px 12px 12px;margin-top:16px;flex:1;width:100%;")
+    else:
+        faixa = painel_vidro(f'<div style="display:flex;gap:6px;">{cols}</div>', c, "padding:14px 12px 12px;margin-top:20px;")
     return top_bar(c, s.get("tag", "")) + body_wrap(
         label(s.get("rotulo"), c) + f'<h2 style="{_fonte_css(s.get("tipografia"), s.get("tamanho", 28))}color:{c["title"]};">{md(s["titulo"], c)}</h2>' + faixa + para(s.get("texto"), c, 14) + source(s.get("fonte_ref"), c))
 
@@ -590,6 +640,49 @@ def s_arte(s, c):
             if s.get("degrade_base", True) else "")
     return (f'<div style="position:absolute;inset:0;transform:translate({dx}px,{dy}px) scale({esc});transform-origin:{s.get("origem","60% 35%")};">{art}</div>' + fade + top_bar(c, s.get("tag", "")) + body_wrap(
         f'<h2 style="{_fonte_css(s.get("tipografia"), s.get("tamanho", 30))}color:{c["title"]};{"text-transform:uppercase;" if s.get("tipografia")=="impacto" else ""}">{md(s["titulo"], c)}</h2>' + para(s.get("texto"), c, 10) + source(s.get("fonte_ref"), c)))
+
+
+def s_mapa_mental(s, c):
+    """Mapa mental: núcleo central (modelo 3D em esfera de vidro ou texto) com ramos curvos para 4 a 6 nós.
+    Cada nó: titulo, texto curto e icone opcional. Ocupa a área abaixo de `reservar_topo`."""
+    itens = s["itens"]; n = len(itens)
+    H = s.get("altura", 290); W = 420 - 36 - 48
+    cx, cy = W / 2, H / 2
+    esq = [it for k, it in enumerate(itens) if k % 2 == 0]; dire = [it for k, it in enumerate(itens) if k % 2 == 1]
+    cor = B if c["mode"] != "light" else BD
+    nos, ramos = "", ""
+    def lado(lst, xn, ancora):
+        nonlocal nos, ramos
+        m = len(lst)
+        for j, it in enumerate(lst):
+            yn = (j + .5) * H / m
+            x1 = cx + (-46 if ancora == "e" else 46)
+            c1 = cx + (-92 if ancora == "e" else 92)
+            ramos += (f'<path d="M{x1:.0f},{cy:.0f} C{c1:.0f},{cy:.0f} {c1:.0f},{yn:.0f} {xn:.0f},{yn:.0f}" fill="none" stroke="{cor}" stroke-width="2" stroke-dasharray="1 0" opacity=".8"/>'
+                      f'<circle cx="{xn:.0f}" cy="{yn:.0f}" r="4" fill="{cor}"/>')
+            box = painel_vidro(
+                f'<div style="display:flex;gap:8px;align-items:flex-start;">'
+                f'<div style="width:24px;height:24px;border-radius:8px;background:{c["icon_bg"]};display:flex;align-items:center;justify-content:center;flex:none;">{icon(it.get("icone", "check"), c["accent"], 14)}</div>'
+                f'<div><div style="font-size:11.5px;font-weight:700;color:{c["title"]};line-height:1.2;">{md(it["titulo"], c)}</div>'
+                + (f'<div style="font-size:9.5px;color:{c["text"]};margin-top:2px;line-height:1.3;">{md_strong(it["texto"], c)}</div>' if it.get("texto") else "") + '</div></div>',
+                c, "padding:8px 10px;border-radius:12px;")
+            lx = 0 if ancora == "e" else W - 118
+            nos += f'<div style="position:absolute;left:{lx:.0f}px;top:{yn:.0f}px;width:118px;transform:translateY(-50%);">{box}</div>'
+    lado(esq, 118, "e"); lado(dire, W - 118, "d")
+    # núcleo
+    if s.get("centro_modelo"):
+        m = s["centro_modelo"]
+        mod = importlib.import_module("ilustracoes." + m["ilustracao"])
+        bgc = c.get("base", LIGHT_BG)
+        centro = (f'<div style="position:absolute;left:{cx-46:.0f}px;top:{cy-46:.0f}px;width:92px;height:92px;border-radius:50%;overflow:hidden;background:{bgc};box-shadow:0 8px 22px rgba(0,0,0,.25),0 0 0 3px {cor};">'
+                  f'<div style="position:absolute;left:{m.get("ox", -20)}px;top:{m.get("oy", -20)}px;width:420px;height:525px;transform:scale({m.get("escala", .42)});transform-origin:0 0;">{mod.cover_svg(B, BD, bgc)}</div></div>'
+                  f'<div style="position:absolute;left:{cx-48:.0f}px;top:{cy+30:.0f}px;width:96px;text-align:center;font-size:7.5px;font-weight:700;letter-spacing:1.2px;color:#fff;background:{BD};border-radius:10px;padding:4px 2px;box-shadow:0 3px 8px rgba(0,0,0,.25);">{s.get("centro","")}</div>')
+    else:
+        centro = (f'<div style="position:absolute;left:{cx-46:.0f}px;top:{cy-46:.0f}px;width:92px;height:92px;border-radius:50%;background:{cor};display:flex;align-items:center;justify-content:center;text-align:center;'
+                  f'color:#fff;font-weight:700;font-size:13px;line-height:1.15;padding:10px;box-shadow:0 8px 22px rgba(0,0,0,.25);">{s.get("centro","")}</div>')
+    mapa_svg = (f'<div style="position:relative;width:{W}px;height:{H}px;margin-top:10px;"><svg style="position:absolute;inset:0" width="{W}" height="{H}" viewBox="0 0 {W} {H}">{ramos}</svg>{nos}{centro}</div>')
+    return top_bar(c, s.get("tag", "")) + body_wrap(
+        label(s.get("rotulo"), c) + f'<h2 style="{_fonte_css(s.get("tipografia"), s.get("tamanho", 24))}color:{c["title"]};">{md(s["titulo"], c)}</h2>' + mapa_svg + source(s.get("fonte_ref"), c))
 
 # ---------------- Estilos (variar a cada post; a paleta é sempre a mesma) ----------------
 ESTILOS = {
@@ -617,7 +710,7 @@ def decor(estilo, i, c):
     return out
 
 TIPOS = dict(capa=s_capa, mito=s_mito, evidencia=s_evidencia, destaque=s_destaque, lista=s_lista, passos=s_passos, cta=s_cta,
-             comparacao=s_comparacao, cartoes=s_cartoes, numeros=s_numeros, dialogo=s_dialogo, arte=s_arte, grade=s_grade, linha_do_tempo=s_linha_do_tempo, citacao=s_citacao, manchete=s_manchete, dado=s_dado, barras=s_barras)
+             comparacao=s_comparacao, cartoes=s_cartoes, mapa_mental=s_mapa_mental, numeros=s_numeros, dialogo=s_dialogo, arte=s_arte, grade=s_grade, linha_do_tempo=s_linha_do_tempo, citacao=s_citacao, manchete=s_manchete, dado=s_dado, barras=s_barras)
 
 def build_html(spec):
     slides = spec["slides"]
@@ -640,6 +733,7 @@ def build_html(spec):
             modo = s.get("fundo") or modo_do_estilo(spec.get("estilo", "alternado"), i)
             _ALINHAR["v"] = s.get("disposicao", "base")
             _ALINHAR["centro_texto"] = s.get("disposicao") == "centro"
+            _ALINHAR["reservar"] = s.get("reservar_topo", 0)
             c = pal({"claro": True, "escuro": False, "verde": "teal", "areia": "areia", "marinho": "marinho"}[modo])
             bg = c["bg"]
             extras = ""
