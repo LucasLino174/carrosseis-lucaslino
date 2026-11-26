@@ -615,7 +615,13 @@ def s_numeros(s, c):
                  f'<div style="position:relative;font-size:{16 if s.get("preencher") else 12.5}px;font-weight:700;color:{c["title"]};line-height:1.2;margin-top:{26 if s.get("preencher") else 0}px;">{md(it["titulo"], c)}</div>'
                  f'<div style="position:relative;font-size:{12.5 if s.get("preencher") else 10.5}px;color:{c["text"]};margin-top:6px;line-height:1.4;">{md_strong(it.get("texto",""), c)}</div></div>')
     if s.get("preencher"):
-        faixa = painel_vidro(f'<div style="display:flex;gap:6px;height:100%;align-items:center;">{cols}</div>', c, "padding:14px 12px 12px;margin-top:16px;flex:1;width:100%;")
+        linhas = ""
+        for k, it in enumerate(s["itens"]):
+            linhas += (f'<div style="flex:1;display:flex;align-items:center;gap:14px;{"border-top:1px solid " + c["line"] + ";" if k else ""}">'
+                       f'<div style="font-family:{FONT_IMPACTO};font-weight:700;font-size:62px;line-height:1;color:{c["accent"]};opacity:.9;min-width:78px;">{k+1:02d}</div>'
+                       f'<div style="text-align:left"><div style="font-size:17px;font-weight:700;color:{c["title"]};line-height:1.2;">{md(it["titulo"], c)}</div>'
+                       f'<div style="font-size:12.5px;color:{c["text"]};margin-top:4px;line-height:1.4;">{md_strong(it.get("texto",""), c)}</div></div></div>')
+        faixa = painel_vidro(f'<div style="display:flex;flex-direction:column;height:100%;">{linhas}</div>', c, "padding:6px 16px;margin-top:14px;flex:1;width:100%;")
     else:
         faixa = painel_vidro(f'<div style="display:flex;gap:6px;">{cols}</div>', c, "padding:14px 12px 12px;margin-top:20px;")
     return top_bar(c, s.get("tag", "")) + body_wrap(
@@ -664,8 +670,8 @@ def s_mapa_mental(s, c):
             box = painel_vidro(
                 f'<div style="display:flex;gap:8px;align-items:flex-start;">'
                 f'<div style="width:24px;height:24px;border-radius:8px;background:{c["icon_bg"]};display:flex;align-items:center;justify-content:center;flex:none;">{icon(it.get("icone", "check"), c["accent"], 14)}</div>'
-                f'<div><div style="font-size:11.5px;font-weight:700;color:{c["title"]};line-height:1.2;">{md(it["titulo"], c)}</div>'
-                + (f'<div style="font-size:9.5px;color:{c["text"]};margin-top:2px;line-height:1.3;">{md_strong(it["texto"], c)}</div>' if it.get("texto") else "") + '</div></div>',
+                f'<div><div style="font-size:12.5px;font-weight:700;color:{c["title"]};line-height:1.2;">{md(it["titulo"], c)}</div>'
+                + (f'<div style="font-size:10.5px;color:{c["text"]};margin-top:2px;line-height:1.3;">{md_strong(it["texto"], c)}</div>' if it.get("texto") else "") + '</div></div>',
                 c, "padding:8px 10px;border-radius:12px;")
             lx = 0 if ancora == "e" else W - 118
             nos += f'<div style="position:absolute;left:{lx:.0f}px;top:{yn:.0f}px;width:118px;transform:translateY(-50%);">{box}</div>'
